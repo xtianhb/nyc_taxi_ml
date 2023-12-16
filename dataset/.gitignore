@@ -1,1 +1,4 @@
+*.PARQUET
 *.parquet
+*.CSV
+*.csv
