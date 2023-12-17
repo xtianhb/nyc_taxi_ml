@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  api:
+    image: flask_api
+    build:
+      context: ./api
+    ports:
+      - 8000:8000
+    volumes:
+      - ./api:/app
