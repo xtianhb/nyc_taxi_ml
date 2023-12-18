@@ -63,7 +63,39 @@ def filter_outliers(df: pd.DataFrame):
 
 
 def delete_outliers(df: pd.DataFrame):
-    # TODO
+    df = df[(df["RatecodeID"] >= 0) & (df["RatecodeID"] <= 6)]
+
+    df = df[(df["passenger_count"] >= 1) & (df["RatecodeID"] <= 5)]
+
+    Q1 = df["fare_amount"].quantile(0.25)
+    Q3 = df["fare_amount"].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 3 * IQR
+    upper_bound = Q3 + 3 * IQR
+    df = df[
+        (df["fare_amount"] > 2)
+        & (df["fare_amount"] >= lower_bound)
+        & (df["fare_amount"] <= upper_bound)
+    ]
+
+    Q1 = df["trip_duration"].quantile(0.25)
+    Q3 = df["trip_duration"].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 3 * IQR
+    upper_bound = Q3 + 3 * IQR
+    df = df[
+        (df["trip_duration"] > 0)
+        & (df["trip_duration"] >= lower_bound)
+        & (df["trip_duration"] <= upper_bound)
+    ]
+
+    Q1 = df["trip_distance"].quantile(0.25)
+    Q3 = df["trip_distance"].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 3 * IQR
+    upper_bound = Q3 + 3 * IQR
+    df = df[(df["trip_distance"] >= lower_bound) & (df["trip_distance"] <= upper_bound)]
+
     return df
 
 
