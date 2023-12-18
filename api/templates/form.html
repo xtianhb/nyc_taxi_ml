@@ -1,0 +1,38 @@
+<div class="container mt-5">
+  <form action="/predict" method="post">
+    <div class="mb-3">
+      <label for="trip_distance" class="form-label"
+        >Trip Distance (Miles):</label
+      >
+      <input
+        type="number"
+        class="form-control"
+        name="trip_distance"
+        required
+        step="0.01"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="pickup_datetime" class="form-label">Date:</label>
+      <input type="date" class="form-control" name="pickup_datetime" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="weather" class="form-label">Weather:</label>
+      <input type="text" class="form-control" name="weather" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="time" class="form-label">Time (in 24-hour format):</label>
+      <input type="time" class="form-control" name="time" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="weather" class="form-label">Transit:</label>
+      <input type="text" class="form-control" name="weather" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Predict</button>
+  </form>
+</div>
