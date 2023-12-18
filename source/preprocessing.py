@@ -48,17 +48,22 @@ def filter_outliers(df: pd.DataFrame):
     df.loc[passenger_outliers.index, "passenger_count"] = passenger_median
 
     fare_median = df["fare_amount"].median()
-    fare_outliers = df[(df["fare_amount"] < 0) | (df["fare_amount"] > 50)]
+    fare_outliers = df[(df["fare_amount"] < 0) | (df["fare_amount"] > 70)]
     df.loc[fare_outliers.index, "fare_amount"] = fare_median
 
-    trip_median = df["trip_duration"].median()
-    trip_outliers = df[(df["trip_duration"] < 0)]
-    df.loc[trip_outliers.index, "trip_duration"] = trip_median
+    trip_duration_median = df["trip_duration"].median()
+    trip_duration_outliers = df[(df["trip_duration"] < 0) | (df["trip_duration"] > 75)]
+    df.loc[trip_duration_outliers.index, "trip_duration"] = trip_duration_median
 
-    distance_median = df["trip_distance"].median()
-    distance_outliers = df[(df["trip_distance"] > 20)]
-    df.loc[distance_outliers.index, "trip_distance"] = distance_median
+    trip_distance_median = df["trip_distance"].median()
+    trip_distance_outliers = df[(df["trip_distance"] > 20)]
+    df.loc[trip_distance_outliers.index, "trip_distance"] = trip_distance_median
 
+    return df
+
+
+def delete_outliers(df: pd.DataFrame):
+    # TODO
     return df
 
 
