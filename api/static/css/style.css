@@ -36,6 +36,30 @@ h1 {
   background-color: rgb(0, 0, 0, 0.2);
 }
 
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+  background-color: #ea9820;
+  border-color: #ea9820;
+}
+
+.result-container {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.result-container h2 {
+  color: #ea9820;
+}
+
+.result-container p {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 767px) {
   .navbar-brand {
     display: none;
