@@ -20,7 +20,7 @@ def hello_world():
 @router.route("/predict", methods=["POST"])
 def predict():
     if request.method == "POST":
-        # Get input data from the form
+        # Get inpuz data from the form
         trip_distance = float(request.form["trip_distance"])
         pickup_date = request.form["pickup_date"]
         time = request.form["time"]
