@@ -1,4 +1,4 @@
-# nyc_taxi_ml
+## NYC Taxi Fare and Trip Duration Prediction
 
 ![NYCtaxi](https://github.com/Dotto-Luis/Projects/assets/93018629/7a30c89d-aeeb-4cc1-8bea-f971d7d0f15e)
 
@@ -72,17 +72,4 @@ Data Dictionaries and MetaData
 Taxi Zone Maps and Lookup Tables
 - [Taxi Zone Lookup Table (CSV)](https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv)
 - [Taxi Zone Shapefile (PARQUET)](https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
