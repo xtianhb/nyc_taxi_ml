@@ -6,18 +6,27 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 
 
+hour_zones = [
+    "hour_zone_morning",
+    "hour_zone_noon",
+    "hour_zone_afternoon",
+    "hour_zone_evening",
+    "hour_zone_night",
+]
+
+
 def categorize_hour(hour: int):
     """ """
-    if 5 <= hour < 12:
-        return "Morning"
-    elif 12 <= hour < 15:
-        return "Noon"
-    elif 15 <= hour < 18:
-        return "Afternoon"
+    if 6 <= hour < 12:
+        return "morning"
+    elif 12 <= hour < 13:
+        return "noon"
+    elif 13 <= hour < 18:
+        return "afternoon"
     elif 18 <= hour < 22:
-        return "Evening"
+        return "evening"
     else:
-        return "Night"
+        return "night"
 
 
 def categorize_rush_hour(hour: int):
@@ -28,24 +37,32 @@ def categorize_rush_hour(hour: int):
         return 0
 
 
-def map_hour_zone(df: pd.DataFrame):
+def add_hour_zone(df: pd.DataFrame):
+    """ """
     df["hour_zone"] = df["hour_of_day"].apply(categorize_hour)
     return df
 
 
-def map_rush_hour(df: pd.DataFrame):
+def add_rush_hour(df: pd.DataFrame):
+    """ """
     df["rush_hour"] = df["hour_of_day"].apply(categorize_rush_hour)
     return df
 
 
-def filter_outliers(df: pd.DataFrame):
-    rate_median = int(df["RatecodeID"].median())
-    rate_outliers = df[(df["RatecodeID"] > 6)]
-    df.loc[rate_outliers.index, "RatecodeID"] = rate_median
+def process_outliers(df: pd.DataFrame, action: str = "delete"):
+    """ """
 
-    passenger_median = df["passenger_count"].median()
-    passenger_outliers = df[(df["passenger_count"] > 5) | (df["passenger_count"] == 0)]
-    df.loc[passenger_outliers.index, "passenger_count"] = passenger_median
+    if action == "delete":
+        df = delete_outliers(df)
+    elif action == "impute":
+        df = impute_outliers(df)
+    else:
+        pass
+    return df
+
+
+def impute_outliers(df: pd.DataFrame):
+    """ """
 
     fare_median = df["fare_amount"].median()
     fare_outliers = df[(df["fare_amount"] < 0) | (df["fare_amount"] > 70)]
@@ -63,38 +80,31 @@ def filter_outliers(df: pd.DataFrame):
 
 
 def delete_outliers(df: pd.DataFrame):
-    df = df[(df["RatecodeID"] >= 0) & (df["RatecodeID"] <= 6)]
+    """ """
 
-    df = df[(df["passenger_count"] >= 1) & (df["RatecodeID"] <= 5)]
-
-    Q1 = df["fare_amount"].quantile(0.25)
-    Q3 = df["fare_amount"].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 3 * IQR
-    upper_bound = Q3 + 3 * IQR
+    lower_bound = df["trip_distance"].quantile(0.01)
+    upper_bound = df["trip_distance"].quantile(0.99)
     df = df[
-        (df["fare_amount"] > 2)
+        (df["trip_distance"] >= 0)
+        & (df["trip_distance"] >= lower_bound)
+        & (df["trip_distance"] <= upper_bound)
+    ]
+
+    lower_bound = df["fare_amount"].quantile(0.01)
+    upper_bound = df["fare_amount"].quantile(0.99)
+    df = df[
+        (df["fare_amount"] >= 0)
         & (df["fare_amount"] >= lower_bound)
         & (df["fare_amount"] <= upper_bound)
     ]
 
-    Q1 = df["trip_duration"].quantile(0.25)
-    Q3 = df["trip_duration"].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 3 * IQR
-    upper_bound = Q3 + 3 * IQR
+    lower_bound = df["trip_duration"].quantile(0.01)
+    upper_bound = df["trip_duration"].quantile(0.99)
     df = df[
-        (df["trip_duration"] > 0)
+        (df["trip_duration"] >= 0)
         & (df["trip_duration"] >= lower_bound)
         & (df["trip_duration"] <= upper_bound)
     ]
-
-    Q1 = df["trip_distance"].quantile(0.25)
-    Q3 = df["trip_distance"].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 3 * IQR
-    upper_bound = Q3 + 3 * IQR
-    df = df[(df["trip_distance"] >= lower_bound) & (df["trip_distance"] <= upper_bound)]
 
     return df
 
@@ -110,17 +120,16 @@ def fill_na_values(df: pd.DataFrame):
     return df
 
 
-def add_trip_duration_feature(df: pd.DataFrame):
+def add_trip_duration(df: pd.DataFrame):
     """ """
     df["trip_duration"] = df["tpep_dropoff_datetime"] - df["tpep_pickup_datetime"]
     df["trip_duration"] = df["trip_duration"].dt.total_seconds() / 60
     return df
 
 
-def drop_features(df: pd.DataFrame, features_drop_list: list):
+def select_features(df: pd.DataFrame, selected_features: list):
     """ """
-    df.drop(columns=features_drop_list, inplace=True)
-    return df
+    return df[selected_features]
 
 
 def add_day_of_week(df: pd.DataFrame):
@@ -185,16 +194,32 @@ def add_rush_encoding(df: pd.DataFrame):
     return df
 
 
-def create_one_hot_encodings(df: pd.DataFrame):
-    df = add_rate_encoding(df)
-    df = add_vendor_encoding(df)
-    df = add_dayofweek_encoding(df)
-    df = add_hourzone_encoding(df)
-    df = add_rush_encoding(df)
+def add_features(df: pd.DataFrame):
+    """ """
+    df = add_trip_duration(df)
+    df = add_day_of_week(df)
+    df = add_hour_of_day(df)
+    df = add_hour_zone(df)
+    df = add_rush_hour(df)
+    return df
+
+
+def create_one_hot_encodings(df: pd.DataFrame, features: str):
+    """ """
+    if "rate_id" in features:
+        df = add_rate_encoding(df)
+    if "vendor_id" in features:
+        df = add_vendor_encoding(df)
+    if "day_of_week" in features:
+        df = add_dayofweek_encoding(df)
+    if "hour_zone" in features:
+        df = add_hourzone_encoding(df)
+    if "rush_hour" in features:
+        df = add_rush_encoding(df)
     return df
 
 
 def split_dataset(df: pd.DataFrame):
-    y_td, y_fa = df[["trip_duration"]], df[["fare_amount"]]
+    y = df[["trip_duration", "fare_amount"]]
     X = df.drop(columns=["trip_duration", "fare_amount"], inplace=False)
-    return X, y_td, y_fa
+    return X, y
