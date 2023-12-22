@@ -111,5 +111,21 @@ def predict_endpoint():
         )
 
 
+@app.route("/", methods=["GET"])
+def index_page():
+    try:
+        return Response(
+            f"This is the index of the model backend. Go to /predict or /test",
+            status=200,
+        )
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        return Response(
+            f"Error {exc_type} in line {exc_tb.tb_lineno}: {e}",
+            status=400,
+        )
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
