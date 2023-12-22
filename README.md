@@ -21,6 +21,11 @@ We are going to use only the data corresponding to "Yellow Taxi Trip Records".
 
 Because of the dataset size, it was split into separate files, one for each month of the year. You can start doing experiments using only one month of data. We advise you to use [Yellow Taxi Trip Records (PARQUET) - May 2022 as a start](https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-05.parquet).
 
+## Project workflow
+
+![Screenshot from 2023-12-22 13-00-59](https://github.com/xtianhb/nyc_taxi_ml/assets/93018629/d66217f8-0c9b-47c5-a19a-84ba7767e1a5)
+
+
 ## Project Structure
 
 Before starting to work, let's take a deep overview of the project structure and each module inside:
@@ -40,8 +45,7 @@ Before starting to work, let's take a deep overview of the project structure and
 │   ├── conftest.py
 │   ├── test_data_utils.py
 │   └── test_preprocessing.py
-├── ASSIGNMENT.md
-├── Home_credit_default_risk.ipynb
+├── NYC_TAXI_ML.ipynb
 ├── README.md
 └── requirements.txt
 ```
