@@ -32,24 +32,44 @@ else:
 app = Flask(__name__)
 
 
+def predict_trip(trip_distance, tpep_pickup_datetime):
+    """ """
+    data = {
+        "trip_distance": [float(trip_distance)],
+        "tpep_pickup_datetime": [pd.to_datetime(tpep_pickup_datetime)],
+    }
+    df = pd.DataFrame(data)
+    df = preprocessing.add_features(df)
+    df.drop(columns="tpep_pickup_datetime", inplace=True)
+    for encoder_model in encoders:
+        encoder, col = encoder_model
+        array = pd.DataFrame(df[col].values.reshape(1, -1), columns=[col])
+        encoded_data = encoder.transform(array)
+        encoded_data = encoded_data.toarray()
+        encoded_df = pd.DataFrame(
+            encoded_data, columns=encoder.get_feature_names_out([col])
+        )
+        df = pd.concat([df, encoded_df], axis=1, join="inner")
+        df.drop(columns=col, inplace=True)
+    x = scaler.transform(df)
+    y_fa = round(model_fa.predict(x)[0], 2)
+    y_td = int(model_td.predict(x)[0])
+    return (y_fa, y_td)
+
+
 @app.route("/test", methods=["GET"])
 def test():
     try:
+        pickup_date = "2023/12/12"
+        pickup_time = "12:15:12"
+        tpep_pickup_datetime = pickup_date + " " + pickup_time
         trip_distance = "5.5"
-        pickup_date = "2023/12/21"
-        pickup_time = "14:30:21"inference_preprocess
-        features = preprocessing.(
-            trip_distance, pickup_date, pickup_time
-        )
-        for encoder in encoders:
-            features = encoder.transform(features)
-        trip_duration = model_td.predict(features)
-        fare_amount = model_fa.predict(features)
+        y_fa, y_td = predict_trip(trip_distance, tpep_pickup_datetime)
         return jsonify(
             {
                 "status": ("OK", 200),
-                "trip_duration": trip_duration,
-                "fare_amount": fare_amount,
+                "trip_duration": y_td,
+                "fare_amount": y_fa,
             }
         )
     except Exception as e:
@@ -62,7 +82,7 @@ def test():
 
 
 @app.route("/predict", methods=["GET", "POST"])
-def predict():
+def predict_endpoint():
     try:
         data = request.get_json()
         trip_distance = data["trip_distance"]

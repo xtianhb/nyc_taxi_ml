@@ -201,17 +201,14 @@ def add_hourzone_encoding(df: pd.DataFrame):
     return final_df, (encoder, "hour_zone")
 
 
-def add_rush_encoding(df: pd.DataFrame):
-    encoder = LabelEncoder()
-    df["rush_hour"] = encoder.fit_transform(df["rush_hour"])
-    return df, (encoder, "rush_hour")
-
-
-def add_features(df: pd.DataFrame, stage: str = "inference"):
+def add_targets(df: pd.DataFrame):
     """ """
-    if stage == "train":
-        df = add_trip_duration(df)
-    # df = add_day_of_week(df)
+    df = add_trip_duration(df)
+    return df
+
+
+def add_features(df: pd.DataFrame):
+    """ """
     df = add_hour_of_day(df)
     df = add_hour_zone(df)
     df = add_rush_hour(df)
@@ -233,9 +230,6 @@ def create_one_hot_encodings(df: pd.DataFrame, features: str):
         encoders.append(encoder)
     if "hour_zone" in features:
         df, encoder = add_hourzone_encoding(df)
-        encoders.append(encoder)
-    if "rush_hour" in features:
-        df, encoder = add_rush_encoding(df)
         encoders.append(encoder)
 
     return df, encoders
