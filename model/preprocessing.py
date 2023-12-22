@@ -14,6 +14,21 @@ hour_zones = [
     "hour_zone_night",
 ]
 
+features = ["trip_distance", "hour_of_day", "rush_hour", "hour_zone"]
+targets = ["fare_amount", "trip_duration"]
+
+
+def inference_preprocess(trip_distance: str, pickup_date: str, pickup_time: str):
+    """ """
+    tppe_pickup_datetime = pickup_date + " " + pickup_time
+    data = {
+        "trip_distance": [float(trip_distance)],
+        "tpep_pickup_datetime": [pd.to_datetime(tppe_pickup_datetime)],
+    }
+    df = pd.DataFrame(data)
+    df = add_features(df, "inference")
+    return df
+
 
 def categorize_hour(hour: int):
     """ """
@@ -151,8 +166,7 @@ def add_rate_encoding(df: pd.DataFrame):
         encoded_data.toarray(), columns=encoder.get_feature_names_out(["RatecodeID"])
     )
     final_df = pd.concat([df, encoded_df], axis=1, join="inner")
-    # final_df.drop(columns="RatecodeID", inplace=True)
-    return final_df
+    return final_df, (encoder, "RatecodeID")
 
 
 def add_vendor_encoding(df: pd.DataFrame):
@@ -163,7 +177,7 @@ def add_vendor_encoding(df: pd.DataFrame):
     )
     final_df = pd.concat([df, encoded_df], axis=1, join="inner")
     final_df.drop(columns="VendorID", inplace=True)
-    return final_df
+    return final_df, (encoder, "VendorID")
 
 
 def add_dayofweek_encoding(df: pd.DataFrame):
@@ -173,8 +187,7 @@ def add_dayofweek_encoding(df: pd.DataFrame):
         encoded_data.toarray(), columns=encoder.get_feature_names_out(["day_of_week"])
     )
     final_df = pd.concat([df, encoded_df], axis=1, join="inner")
-    # final_df.drop(columns="day_of_week", inplace=True)
-    return final_df
+    return final_df, (encoder, "day_of_week")
 
 
 def add_hourzone_encoding(df: pd.DataFrame):
@@ -185,19 +198,17 @@ def add_hourzone_encoding(df: pd.DataFrame):
     )
     final_df = pd.concat([df, encoded_df], axis=1, join="inner")
     final_df.drop(columns="hour_zone", inplace=True)
-    return final_df
+    return final_df, (encoder, "hour_zone")
 
 
-def add_rush_encoding(df: pd.DataFrame):
-    l_encoder = LabelEncoder()
-    df["rush_hour"] = l_encoder.fit_transform(df["rush_hour"])
+def add_targets(df: pd.DataFrame):
+    """ """
+    df = add_trip_duration(df)
     return df
 
 
 def add_features(df: pd.DataFrame):
     """ """
-    df = add_trip_duration(df)
-    df = add_day_of_week(df)
     df = add_hour_of_day(df)
     df = add_hour_zone(df)
     df = add_rush_hour(df)
@@ -206,20 +217,29 @@ def add_features(df: pd.DataFrame):
 
 def create_one_hot_encodings(df: pd.DataFrame, features: str):
     """ """
+    encoders = []
+
     if "rate_id" in features:
-        df = add_rate_encoding(df)
+        df, encoder = add_rate_encoding(df)
+        encoders.append(encoder)
     if "vendor_id" in features:
-        df = add_vendor_encoding(df)
+        df, encoder = add_vendor_encoding(df)
+        encoders.append(encoder)
     if "day_of_week" in features:
-        df = add_dayofweek_encoding(df)
+        df, encoder = add_dayofweek_encoding(df)
+        encoders.append(encoder)
     if "hour_zone" in features:
-        df = add_hourzone_encoding(df)
-    if "rush_hour" in features:
-        df = add_rush_encoding(df)
-    return df
+        df, encoder = add_hourzone_encoding(df)
+        encoders.append(encoder)
+
+    return df, encoders
 
 
 def split_dataset(df: pd.DataFrame):
     y = df[["trip_duration", "fare_amount"]]
     X = df.drop(columns=["trip_duration", "fare_amount"], inplace=False)
     return X, y
+
+
+def process_inference():
+    pass
