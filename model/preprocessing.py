@@ -18,18 +18,6 @@ features = ["trip_distance", "hour_of_day", "rush_hour", "hour_zone"]
 targets = ["fare_amount", "trip_duration"]
 
 
-def inference_preprocess(trip_distance: str, pickup_date: str, pickup_time: str):
-    """ """
-    tppe_pickup_datetime = pickup_date + " " + pickup_time
-    data = {
-        "trip_distance": [float(trip_distance)],
-        "tpep_pickup_datetime": [pd.to_datetime(tppe_pickup_datetime)],
-    }
-    df = pd.DataFrame(data)
-    df = add_features(df, "inference")
-    return df
-
-
 def categorize_hour(hour: int):
     """ """
     if 6 <= hour < 12:
