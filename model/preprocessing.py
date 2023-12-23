@@ -14,7 +14,9 @@ hour_zones = [
     "hour_zone_night",
 ]
 
-features = ["trip_distance", "hour_of_day", "rush_hour", "hour_zone"]
+
+features = ["trip_distance", "rush_hour", "hour_zone", "day_of_week"]
+# Don't change targets
 targets = ["fare_amount", "trip_duration"]
 
 
@@ -83,31 +85,25 @@ def impute_outliers(df: pd.DataFrame):
 
 
 def delete_outliers(df: pd.DataFrame):
-    """ """
+    """
+    ** Percentiles for 0.01 **
+    trip_distance 0.0
+    fare_amount 2.5
+    trip_duration 0.38
 
-    lower_bound = df["trip_distance"].quantile(0.01)
-    upper_bound = df["trip_distance"].quantile(0.99)
-    df = df[
-        (df["trip_distance"] >= 0)
-        & (df["trip_distance"] >= lower_bound)
-        & (df["trip_distance"] <= upper_bound)
-    ]
+    ** Percentiles for 0.995 **
+    trip_distance 21.78
+    fare_amount 71.5
+    trip_duration 83.06
+    """
 
-    lower_bound = df["fare_amount"].quantile(0.01)
-    upper_bound = df["fare_amount"].quantile(0.99)
-    df = df[
-        (df["fare_amount"] >= 0)
-        & (df["fare_amount"] >= lower_bound)
-        & (df["fare_amount"] <= upper_bound)
-    ]
+    df = df[(df["trip_distance"] >= 0.1) & (df["trip_distance"] <= 25)]
 
-    lower_bound = df["trip_duration"].quantile(0.01)
-    upper_bound = df["trip_duration"].quantile(0.99)
-    df = df[
-        (df["trip_duration"] >= 0)
-        & (df["trip_duration"] >= lower_bound)
-        & (df["trip_duration"] <= upper_bound)
-    ]
+    df = df[(df["fare_amount"] >= 2.5) & (df["fare_amount"] <= 75.0)]
+
+    df = df[(df["trip_duration"] >= 0.25) & (df["trip_duration"] <= 90)]
+
+    df = df[(df["passenger_count"] >= 1) & (df["passenger_count"] <= 6)]
 
     return df
 
@@ -154,6 +150,7 @@ def add_rate_encoding(df: pd.DataFrame):
         encoded_data.toarray(), columns=encoder.get_feature_names_out(["RatecodeID"])
     )
     final_df = pd.concat([df, encoded_df], axis=1, join="inner")
+    final_df.drop(columns="RatecodeID", inplace=True)
     return final_df, (encoder, "RatecodeID")
 
 
@@ -175,6 +172,7 @@ def add_dayofweek_encoding(df: pd.DataFrame):
         encoded_data.toarray(), columns=encoder.get_feature_names_out(["day_of_week"])
     )
     final_df = pd.concat([df, encoded_df], axis=1, join="inner")
+    final_df.drop(columns="day_of_week", inplace=True)
     return final_df, (encoder, "day_of_week")
 
 
@@ -198,6 +196,7 @@ def add_targets(df: pd.DataFrame):
 def add_features(df: pd.DataFrame):
     """ """
     df = add_hour_of_day(df)
+    df = add_day_of_week(df)
     df = add_hour_zone(df)
     df = add_rush_hour(df)
     return df
