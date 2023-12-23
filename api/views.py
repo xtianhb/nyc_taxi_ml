@@ -1,3 +1,4 @@
+import requests
 from flask import (
     Blueprint,
     current_app,
@@ -9,9 +10,9 @@ from flask import (
     url_for,
 )
 
-from model.app_model import predict_taxi_fare_duration
-
 router = Blueprint("app_router", __name__, template_folder="templates")
+
+MODEL_URL = "http://modelsvc:5000/predict"
 
 
 @router.route("/")
@@ -22,19 +23,32 @@ def hello_world():
 @router.route("/predict", methods=["POST"])
 def predict():
     if request.method == "POST":
-        # Get inpuz data from the form
+        # Get input data from the form
         trip_distance = float(request.form["trip_distance"])
         pickup_date = request.form["pickup_date"]
         pickup_time = request.form["pickup_date"]
 
-        # # Use the ML model to make predictions
-        # status, fare_amount, trip_duration = predict_taxi_fare_duration(
-        #     trip_distance, pickup_date, pickup_time
-        # )
+        data = {
+            "trip_distance": trip_distance,
+            "pickup_date": pickup_date,
+            "pickup_time": pickup_time,
+        }
 
-        # The following variables are fixed because we do not have a model function yet.
-        fare = 20.0
-        duration = 15
+        response = requests.post(MODEL_URL, json=data)
+
+        # Checking the response
+        if response.status_code == 200:  # Check for the appropriate status code
+            print("POST request successful!")
+            print("Response:", response.json())  # Print the response content
+            predictions = response.json()
+            fare = predictions["fare_amount"]
+            duration = predictions["trip_duration"]
+        else:
+            print("POST request failed with status code:", response.status_code)
+            print(
+                "Error message:", response.text
+            )  # Print the error message if request failed
+            fare, duration = -1, -1
 
         # Pass the prediction to the result page
         return render_template("result.html", fare=fare, duration=duration)

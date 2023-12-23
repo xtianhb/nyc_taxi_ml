@@ -32,8 +32,9 @@ else:
 app = Flask(__name__)
 
 
-def predict_trip(trip_distance, tpep_pickup_datetime):
+def predict_trip(trip_distance, pickup_date, pickup_time):
     """ """
+    tpep_pickup_datetime = pickup_date + " " + pickup_time
     data = {
         "trip_distance": [float(trip_distance)],
         "tpep_pickup_datetime": [pd.to_datetime(tpep_pickup_datetime)],
@@ -62,9 +63,8 @@ def test():
     try:
         pickup_date = "2023/12/12"
         pickup_time = "12:15:12"
-        tpep_pickup_datetime = pickup_date + " " + pickup_time
         trip_distance = "5.5"
-        y_fa, y_td = predict_trip(trip_distance, tpep_pickup_datetime)
+        y_fa, y_td = predict_trip(trip_distance, pickup_date, pickup_time)
         return jsonify(
             {
                 "status": ("OK", 200),
@@ -88,17 +88,12 @@ def predict_endpoint():
         trip_distance = data["trip_distance"]
         pickup_date = data["pickup_date"]
         pickup_time = data["pickup_time"]
-        features = preprocessing.inference_preprocess(
-            trip_distance, pickup_date, pickup_time
-        )
-        features = scaler.transform(features)
-        trip_duration = model_td.predict(features)
-        fare_amount = model_fa.predict(features)
+        y_td, y_fa = predict_trip(trip_distance, pickup_date, pickup_time)
         return jsonify(
             {
                 "status": ("OK", 200),
-                "trip_duration": trip_duration,
-                "fare_amount": fare_amount,
+                "trip_duration": y_td,
+                "fare_amount": y_fa,
             }
         )
     except Exception as e:
