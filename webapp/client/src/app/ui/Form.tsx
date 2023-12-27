@@ -1,25 +1,20 @@
 'use client';
 import React, { useState, FormEvent, useRef, useCallback } from 'react';
-import axios from 'axios';
-import {
-  useJsApiLoader,
-  GoogleMap,
-  Marker,
-  Autocomplete,
-  DirectionsRenderer,
-} from '@react-google-maps/api';
+import { useRouter } from 'next/navigation';
+import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import Loading from '../loading';
+import Map from './Map';
+import { getPrediction } from '../lib/data';
+const libraryPlace = ['places'];
 
 const Form: React.FC = () => {
   const [directionsResponse, setDirectionsResponse] =
     useState<google.maps.DirectionsResult | null>(null);
-  const [distance, setDistance] = useState('');
+  const [distance, setDistance] = useState<null | string>(null);
 
   const pickUpRef = useRef<HTMLInputElement>(null);
   const dropOffRef = useRef<HTMLInputElement>(null);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [pickupLocation, setPickupLocation] = useState('');
-  const [dropoffLocation, setDropoffLocation] = useState('');
   const [pickupDate, setPickupDate] = useState('');
   const [time, setTime] = useState('');
 
@@ -27,7 +22,7 @@ const Form: React.FC = () => {
   const apiKey = 'AIzaSyBAw4NhN1QsjPWlH1KNqJh2HeKwwM3Au0A';
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
-    libraries: ['places'],
+    libraries: libraryPlace as any,
   });
 
   const calculateDistance = useCallback(async () => {
@@ -50,35 +45,35 @@ const Form: React.FC = () => {
     }
   }, []);
 
-  // function clearRoute() {
-  //   setDirectionResponse(null);
-  //   setDistance('');
-  //   pickUpRef.current.value = '';
-  //   dropOffRef.current.value = '';
-  // }
+  function clearRoute() {
+    setDirectionsResponse(null);
+    setDistance('');
+    pickUpRef.current!.value = '';
+    dropOffRef.current!.value = '';
+  }
+  const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    setIsSubmitting(true);
-
-    // Calculate distance using Google Maps API
-    // console.log(pickupLocation, dropoffLocation, pickupDate, time, distance);
-
-    // Your prediction logic (API call, etc.)
-
-    setIsSubmitting(false);
+    console.log(pickupDate, time, distance);
+    const data = { pickupDate, time, distance };
+    try {
+      await getPrediction(data);
+      router.push('/predict');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (!isLoaded) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   return (
-    <div className='container mt-5'>
-      <form onSubmit={handleSubmit} className='mx-auto max-w-md'>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          {/* Pickup Location Input */}
+    <div className='container mx-auto mt-5 p-4 lg:max-w-4xl'>
+      {/* Pickup and Dropoff Location Inputs */}
+      <div className='flex flex-col lg:flex-row lg:space-x-4'>
+        <div className='mb-4 lg:w-1/2 lg:flex lg:flex-col'>
           <div className='mb-4'>
             <label
               htmlFor='pickup_location'
@@ -90,16 +85,11 @@ const Form: React.FC = () => {
               <input
                 type='text'
                 className='form-input w-full border border-gray-300 rounded-md'
-                name='pickup_location'
-                value={pickupLocation}
-                onChange={(e) => setPickupLocation(e.target.value)}
-                required
                 ref={pickUpRef}
               />
             </Autocomplete>
           </div>
 
-          {/* Dropoff Location Input */}
           <div className='mb-4'>
             <label
               htmlFor='dropoff_location'
@@ -111,98 +101,82 @@ const Form: React.FC = () => {
               <input
                 type='text'
                 className='form-input w-full border border-gray-300 rounded-md'
-                name='dropoff_location'
-                value={dropoffLocation}
-                onChange={(e) => setDropoffLocation(e.target.value)}
-                required
                 ref={dropOffRef}
               />
             </Autocomplete>
+
+            {/* Distance Button */}
+            <div className='text-center mt-4'>
+              <button
+                type='button'
+                className='btn-primary btn-lg font-semibold text-white'
+                onClick={() => {
+                  calculateDistance();
+                  clearRoute();
+                }}
+              >
+                Calculate Distance
+              </button>
+            </div>
+            {distance !== null && (
+              <div className='mt-4 text-center'>
+                <p className='font-bold'>Distance: {distance}</p>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Distance Button */}
-        <div className='text-center'>
-          <button
-            type='submit'
-            className='btn-primary btn-lg'
-            onClick={calculateDistance}
-          >
-            Calculate Distance
-          </button>
-        </div>
-        {/* Display Distance */}
-        {distance !== null && (
-          <div className='mt-4'>
-            <p className='font-bold'>Calculated Distance: {distance}</p>
-          </div>
-        )}
-
+        {/* Right Side: Map */}
+        <Map center={center} directionsResponse={directionsResponse} />
+      </div>
+      <form onSubmit={handleSubmit} className='mx-auto max-w-md mt-10'>
         {/* Date Input */}
-        <div className='mb-4'>
-          <label
-            htmlFor='pickup_date'
-            className='block text-gray-700 font-bold mb-2'
-          >
-            Date:
-          </label>
-          <input
-            type='date'
-            className='form-input w-full border border-gray-300 rounded-md'
-            name='pickup_date'
-            value={pickupDate}
-            onChange={(e) => setPickupDate(e.target.value)}
-            required
-          />
-        </div>
+        <div className='flex space-x-4'>
+          <div className='mb-4 flex-1'>
+            <label
+              htmlFor='pickup_date'
+              className='block text-gray-700 font-bold mb-2'
+            >
+              Date:
+            </label>
+            <input
+              type='date'
+              className='form-input w-full border border-gray-300 rounded-md'
+              name='pickup_date'
+              value={pickupDate}
+              onChange={(e) => setPickupDate(e.target.value)}
+              required
+            />
+          </div>
 
-        {/* Time Input */}
-        <div className='mb-4'>
-          <label htmlFor='time' className='block text-gray-700 font-bold mb-2'>
-            Time (in 24-hour format):
-          </label>
-          <input
-            type='time'
-            className='form-input w-full border border-gray-300 rounded-md'
-            name='time'
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            required
-          />
+          {/* Time Input */}
+          <div className='mb-4 flex-1'>
+            <label
+              htmlFor='time'
+              className='block text-gray-700 font-bold mb-2'
+            >
+              Time (24-hour):
+            </label>
+            <input
+              type='time'
+              className='form-input w-full border border-gray-300 rounded-md'
+              name='time'
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              required
+            />
+          </div>
         </div>
 
         {/* Predict Button */}
+        {/* <Link href={'/predict'}> */}
         <div className='text-center'>
-          <button
-            type='submit'
-            className='btn-primary btn-lg'
-            disabled={isSubmitting}
-          >
-            <span className='font-semibold'>
-              {isSubmitting ? 'Predicting...' : 'Predict'}
-            </span>
+          <button type='submit' className='btn-primary btn-lg'>
+            <span className='font-semibold'>Predict</span>
           </button>
         </div>
+        {/* </Link> */}
       </form>
-      <div className='flex items-center justify-center'>
-        <GoogleMap
-          center={center}
-          zoom={11.5}
-          mapContainerStyle={{ width: '30vw', height: '30vh' }}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
-        >
-          <Marker position={center} />
-          {/* Display markers or directions */}
-          {directionsResponse && (
-            <DirectionsRenderer directions={directionsResponse} />
-          )}
-        </GoogleMap>
-      </div>
     </div>
   );
 };
