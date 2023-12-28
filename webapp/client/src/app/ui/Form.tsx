@@ -7,6 +7,11 @@ import Map from './Map';
 import { getPrediction } from '../lib/data';
 const libraryPlace = ['places'];
 
+interface ApiResponse {
+  fare: number;
+  duration: number;
+}
+
 const Form: React.FC = () => {
   const [directionsResponse, setDirectionsResponse] =
     useState<google.maps.DirectionsResult | null>(null);
@@ -14,9 +19,10 @@ const Form: React.FC = () => {
 
   const pickUpRef = useRef<HTMLInputElement>(null);
   const dropOffRef = useRef<HTMLInputElement>(null);
+  const [apiResponse, setapiResponse] = useState<ApiResponse | null>(null);
 
-  const [pickupDate, setPickupDate] = useState('');
-  const [time, setTime] = useState('');
+  const [pickup_date, setPickup_date] = useState('');
+  const [pickup_time, setpickup_time] = useState('');
 
   const center = { lat: 40.71427, lng: -74.00597 };
   const apiKey = 'AIzaSyBAw4NhN1QsjPWlH1KNqJh2HeKwwM3Au0A';
@@ -55,11 +61,15 @@ const Form: React.FC = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(pickupDate, time, distance);
-    const data = { pickupDate, time, distance };
+    var mi: any = distance?.split(' ');
+    var firstPart = mi[0];
+    const data = { trip_distance: firstPart, pickup_date, pickup_time };
+    console.log('Datos: ', data);
     try {
-      await getPrediction(data);
-      router.push('/predict');
+      const res: any = await getPrediction(data);
+      console.log('response nextjs: ', res);
+      setapiResponse(res.data);
+      console.log(apiResponse);
     } catch (error) {
       console.log(error);
     }
@@ -143,8 +153,8 @@ const Form: React.FC = () => {
               type='date'
               className='form-input w-full border border-gray-300 rounded-md'
               name='pickup_date'
-              value={pickupDate}
-              onChange={(e) => setPickupDate(e.target.value)}
+              value={pickup_date}
+              onChange={(e) => setPickup_date(e.target.value)}
               required
             />
           </div>
@@ -161,8 +171,8 @@ const Form: React.FC = () => {
               type='time'
               className='form-input w-full border border-gray-300 rounded-md'
               name='time'
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
+              value={pickup_time}
+              onChange={(e) => setpickup_time(e.target.value)}
               required
             />
           </div>
@@ -177,6 +187,33 @@ const Form: React.FC = () => {
         </div>
         {/* </Link> */}
       </form>
+      {apiResponse && (
+        <div className='container mx-auto mt-5 result-container'>
+          <h2 className='mb-4 text-2xl font-semibold text-yellow-500'>
+            Prediction Result
+          </h2>
+
+          <div className='mb-3'>
+            <label
+              htmlFor='fare'
+              className='block text-sm font-medium text-gray-700'
+            >
+              Predicted Fare:
+            </label>
+            <p className='text-lg font-bold'>{apiResponse.fare}</p>
+          </div>
+
+          <div className='mb-3'>
+            <label
+              htmlFor='duration'
+              className='block text-sm font-medium text-gray-700'
+            >
+              Predicted Duration:
+            </label>
+            <p className='text-lg font-bold'>{apiResponse.duration}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

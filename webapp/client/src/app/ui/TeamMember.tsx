@@ -23,7 +23,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
       />
       <h2 className='text-lg font-bold mb-2'>{name}</h2>
       <p>
-        GitHub:{' '}
+        GitHub:
         <a
           href={`https://github.com/${githubUsername}`}
           target='_blank'
