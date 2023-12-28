@@ -25,7 +25,7 @@ const Form: React.FC = () => {
   const [pickup_time, setpickup_time] = useState('');
 
   const center = { lat: 40.71427, lng: -74.00597 };
-  const apiKey = 'AIzaSyBAw4NhN1QsjPWlH1KNqJh2HeKwwM3Au0A';
+  const apiKey: any = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
     libraries: libraryPlace as any,
