@@ -18,21 +18,18 @@
     <link rel="stylesheet" href="../static/css/style.css" />
   </head>
   <body>
-    {% include 'navbar.html' %} {% include 'hero-cover.html' %} 
-
     <div class="container result-container mt-5">
-        <h2 class="mb-4">Prediction Result</h2>
+      <h2 class="mb-4">Prediction Result</h2>
 
-        <div class="mb-3">
-            <label for="fare" class="form-label">Predicted Fare:</label>
-            <p>{{ fare }}</p>
-        </div>
+      <div class="mb-3">
+        <label for="fare" class="form-label">Predicted Fare:</label>
+        <p>{{ fare }}</p>
+      </div>
 
-        <div class="mb-3">
-            <label for="duration" class="form-label">Predicted Duration:</label>
-            <p>{{ duration }}</p>
-        </div>
-    </div>
+      <div class="mb-3">
+        <label for="duration" class="form-label">Predicted Duration:</label>
+        <p>{{ duration }}</p>
+      </div>
     </div>
   </body>
 </html>
