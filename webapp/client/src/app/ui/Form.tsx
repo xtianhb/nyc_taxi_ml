@@ -1,10 +1,15 @@
 'use client';
-import React, { useState, FormEvent, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import React, {
+  useState,
+  FormEvent,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import Loading from '../loading';
 import Map from './Map';
-import { getPrediction } from '../lib/data';
+import { getPrediction } from '../../helpers/data';
 const libraryPlace = ['places'];
 
 interface ApiResponse {
@@ -25,6 +30,10 @@ const Form: React.FC = () => {
   const [pickup_time, setpickup_time] = useState('');
 
   const center = { lat: 40.71427, lng: -74.00597 };
+  const memoizedCenter = useMemo(() => {
+    return { lat: 40.71427, lng: -74.00597 };
+  }, [pickup_date, pickup_time]);
+
   const apiKey: any = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
@@ -49,7 +58,7 @@ const Form: React.FC = () => {
     } else {
       console.error('Distance information not available.');
     }
-  }, []);
+  }, [directionsResponse, memoizedCenter]);
 
   function clearRoute() {
     setDirectionsResponse(null);
@@ -57,7 +66,6 @@ const Form: React.FC = () => {
     pickUpRef.current!.value = '';
     dropOffRef.current!.value = '';
   }
-  const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -137,7 +145,7 @@ const Form: React.FC = () => {
         </div>
 
         {/* Right Side: Map */}
-        <Map center={center} directionsResponse={directionsResponse} />
+        <Map center={memoizedCenter} directionsResponse={directionsResponse} />
       </div>
       <form onSubmit={handleSubmit} className='mx-auto max-w-md mt-10'>
         {/* Date Input */}
