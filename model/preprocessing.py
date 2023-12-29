@@ -137,10 +137,20 @@ def add_day_of_week(df: pd.DataFrame):
     return df
 
 
+def add_avg_speed(df: pd.DataFrame):
+    """ """
+    df["avg_speed"] = df["trip_distance"] / df["trip_duration"]
+    return df
+
+
 def add_hour_of_day(df: pd.DataFrame):
     """ """
     df["hour_of_day"] = df["tpep_pickup_datetime"].dt.hour
     return df
+
+def save_avg_speed(df: pd.DataFrame):
+
+    return
 
 
 def add_rate_encoding(df: pd.DataFrame):
@@ -190,6 +200,7 @@ def add_hourzone_encoding(df: pd.DataFrame):
 def add_targets(df: pd.DataFrame):
     """ """
     df = add_trip_duration(df)
+    df = add_avg_speed(df)
     return df
 
 

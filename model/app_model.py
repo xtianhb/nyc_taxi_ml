@@ -5,23 +5,24 @@ from flask import Flask, request, jsonify, Response
 import preprocessing
 import pickle
 
-if os.path.exists("model_td.pkl"):
-    with open("model_td.pkl", "rb") as model_td_file:
-        model_td = pickle.load(model_td_file)
+model_prefix = os.environ.get("MODEL_PREFIX", "lgbm")
+model_name_td = f"{model_prefix}_model_td.pkl"
+model_name_fa = f"{model_prefix}_model_fa.pkl"
+
+print(model_name_td)
+print(model_name_fa)
+
+if os.path.exists(model_name_td):
+    with open(model_name_td, "rb") as model_td_fd:
+        model_td = pickle.load(model_td_fd)
 else:
     print("TD model not found!")
 
-if os.path.exists("model_fa.pkl"):
-    with open("model_fa.pkl", "rb") as model_fa_file:
-        model_fa = pickle.load(model_fa_file)
+if os.path.exists(model_name_fa):
+    with open(model_name_fa, "rb") as model_fa_fd:
+        model_fa = pickle.load(model_fa_fd)
 else:
     print("FA model not found!")
-
-if os.path.exists("scaler.pkl"):
-    with open("scaler.pkl", "rb") as scaler_file:
-        scaler = pickle.load(scaler_file)
-else:
-    print("Scaler model not found!")
 
 if os.path.exists("encoders.pkl"):
     with open("encoders.pkl", "rb") as encoders_file:
@@ -52,7 +53,7 @@ def predict_trip(trip_distance, pickup_date, pickup_time):
         )
         df = pd.concat([df, encoded_df], axis=1, join="inner")
         df.drop(columns=col, inplace=True)
-    x = scaler.transform(df)
+    x = df
     y_fa = round(model_fa.predict(x)[0], 2)
     y_td = int(model_td.predict(x)[0])
     return (y_fa, y_td)
