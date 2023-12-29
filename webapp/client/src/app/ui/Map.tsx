@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
 
 interface MapProps {
@@ -7,6 +7,8 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
+  console.log('render:', center, directionsResponse);
+
   return (
     <div className='lg:w-1/2'>
       {/* GoogleMap */}
@@ -22,116 +24,6 @@ const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
             streetViewControl: false,
             mapTypeControl: false,
             fullscreenControl: false,
-            styles: [
-              {
-                featureType: 'all',
-                elementType: 'geometry',
-              },
-              {
-                featureType: 'all',
-                elementType: 'labels.text.stroke',
-                stylers: [
-                  {
-                    visibility: 'on',
-                  },
-                  {
-                    color: '#EA9820',
-                  },
-                ],
-              },
-              {
-                featureType: 'all',
-                elementType: 'labels.text.fill',
-                stylers: [
-                  {
-                    saturation: 36,
-                  },
-                  {
-                    color: '#FFFFFF',
-                  },
-                  {
-                    lightness: 10,
-                  },
-                ],
-              },
-              {
-                featureType: 'all',
-                elementType: 'labels.icon',
-              },
-              {
-                featureType: 'administrative',
-                elementType: 'geometry',
-                stylers: [
-                  {
-                    color: '#FFFFFF',
-                  },
-                ],
-              },
-              {
-                featureType: 'administrative.country',
-                elementType: 'geometry.stroke',
-                stylers: [
-                  {
-                    color: '#FFFFFF',
-                  },
-                ],
-              },
-              {
-                featureType: 'administrative.province',
-                elementType: 'geometry.stroke',
-                stylers: [
-                  {
-                    color: '#FFFFFF',
-                  },
-                ],
-              },
-              {
-                featureType: 'administrative.locality',
-                elementType: 'geometry.stroke',
-                stylers: [
-                  {
-                    color: '#FFFFFF',
-                  },
-                ],
-              },
-              {
-                featureType: 'administrative.neighborhood',
-                elementType: 'geometry.stroke',
-                stylers: [
-                  {
-                    color: '#FFFFFF',
-                  },
-                ],
-              },
-              {
-                featureType: 'administrative.land_parcel',
-                elementType: 'geometry.stroke',
-                stylers: [
-                  {
-                    color: '#FFFFFF',
-                  },
-                ],
-              },
-              {
-                featureType: 'administrative',
-                elementType: 'labels.text.fill',
-                stylers: [
-                  {
-                    color: '#FFFFFF',
-                  },
-                ],
-              },
-              {
-                featureType: 'landscape',
-                elementType: 'geometry',
-                stylers: [
-                  {
-                    color: 'black',
-                  },
-                ],
-              },
-              // Add more styles as needed
-            ],
           }}
         >
           <Marker position={center} />
@@ -145,4 +37,4 @@ const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
   );
 };
 
-export default memo(Map);
+export default React.memo(Map);
