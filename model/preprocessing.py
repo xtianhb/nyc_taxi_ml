@@ -14,8 +14,8 @@ hour_zones = [
     "hour_zone_night",
 ]
 
-
-features = ["trip_distance", "rush_hour", "hour_zone", "day_of_week"]
+# order of features is important! -> add_feature()
+features = ["trip_distance", "hour_of_day", "rush_hour", "hour_zone", "day_of_week"]
 # Don't change targets
 targets = ["fare_amount", "trip_duration"]
 
@@ -195,10 +195,11 @@ def add_targets(df: pd.DataFrame):
 
 def add_features(df: pd.DataFrame):
     """ """
+    # order of features is important!
     df = add_hour_of_day(df)
-    df = add_day_of_week(df)
-    df = add_hour_zone(df)
     df = add_rush_hour(df)
+    df = add_hour_zone(df)
+    df = add_day_of_week(df)
     return df
 
 
