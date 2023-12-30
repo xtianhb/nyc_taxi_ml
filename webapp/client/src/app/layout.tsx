@@ -11,12 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'NYC Taxi Fare and Trip Duration Prediction',
   icons: {
-    icon: [
-      {
-        url: '/favicon.ico',
-        href: '/favicon.ico',
-      },
-    ],
+    icon: ['/favicon.ico'],
   },
 };
 
@@ -30,7 +25,6 @@ export default function RootLayout({
       <body className={inter.className}>
         <Suspense fallback={<Loading />}>
           <Navbar />
-
           {children}
         </Suspense>
       </body>

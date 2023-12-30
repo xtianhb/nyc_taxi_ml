@@ -37,4 +37,7 @@ const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
   );
 };
 
-export default React.memo(Map);
+export default React.memo(Map, (prevProps, nextProps) => {
+  // Only re-render if directionsResponse changes
+  return prevProps.directionsResponse === nextProps.directionsResponse;
+});

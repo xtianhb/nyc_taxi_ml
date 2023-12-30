@@ -10,6 +10,7 @@ import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import Loading from '../loading';
 import Map from './Map';
 import { getPrediction } from '../../helpers/data';
+import Prediction from './Prediction';
 const libraryPlace = ['places'];
 
 interface ApiResponse {
@@ -27,18 +28,29 @@ const Form: React.FC = () => {
   const [apiResponse, setapiResponse] = useState<ApiResponse | null>(null);
 
   const [pickup_date, setPickup_date] = useState('');
-  const [pickup_time, setpickup_time] = useState('');
+  const [pickup_time, setPickup_time] = useState('');
 
   const center = { lat: 40.71427, lng: -74.00597 };
-  const memoizedCenter = useMemo(() => {
-    return { lat: 40.71427, lng: -74.00597 };
-  }, [pickup_date, pickup_time]);
 
   const apiKey: any = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
     libraries: libraryPlace as any,
   });
+
+  const handleDateChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPickup_date(e.target.value);
+    },
+    []
+  );
+
+  const handleTimeChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPickup_time(e.target.value);
+    },
+    []
+  );
 
   const calculateDistance = useCallback(async () => {
     if (pickUpRef.current?.value === '' || dropOffRef.current?.value === '') {
@@ -58,7 +70,7 @@ const Form: React.FC = () => {
     } else {
       console.error('Distance information not available.');
     }
-  }, [directionsResponse, memoizedCenter]);
+  }, [pickUpRef, dropOffRef]);
 
   function clearRoute() {
     setDirectionsResponse(null);
@@ -70,8 +82,8 @@ const Form: React.FC = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     var mi: any = distance?.split(' ');
-    var firstPart = mi[0];
-    const data = { trip_distance: firstPart, pickup_date, pickup_time };
+    var distanceNumber = mi[0];
+    const data = { trip_distance: distanceNumber, pickup_date, pickup_time };
     console.log('Datos: ', data);
     try {
       const res: any = await getPrediction(data);
@@ -97,7 +109,7 @@ const Form: React.FC = () => {
               htmlFor='pickup_location'
               className='block text-gray-700 font-bold mb-2'
             >
-              Pickup Location:
+              Pickup Location:...
             </label>
             <Autocomplete>
               <input
@@ -145,7 +157,7 @@ const Form: React.FC = () => {
         </div>
 
         {/* Right Side: Map */}
-        <Map center={memoizedCenter} directionsResponse={directionsResponse} />
+        <Map center={center} directionsResponse={directionsResponse} />
       </div>
       <form onSubmit={handleSubmit} className='mx-auto max-w-md mt-10'>
         {/* Date Input */}
@@ -162,7 +174,7 @@ const Form: React.FC = () => {
               className='form-input w-full border border-gray-300 rounded-md'
               name='pickup_date'
               value={pickup_date}
-              onChange={(e) => setPickup_date(e.target.value)}
+              onChange={handleDateChange}
               required
             />
           </div>
@@ -180,47 +192,21 @@ const Form: React.FC = () => {
               className='form-input w-full border border-gray-300 rounded-md'
               name='time'
               value={pickup_time}
-              onChange={(e) => setpickup_time(e.target.value)}
+              onChange={handleTimeChange}
               required
             />
           </div>
         </div>
 
         {/* Predict Button */}
-        {/* <Link href={'/predict'}> */}
         <div className='text-center'>
           <button type='submit' className='btn-primary btn-lg'>
             <span className='font-semibold'>Predict</span>
           </button>
         </div>
-        {/* </Link> */}
       </form>
       {apiResponse && (
-        <div className='container mx-auto mt-5 result-container'>
-          <h2 className='mb-4 text-2xl font-semibold text-yellow-500'>
-            Prediction Result
-          </h2>
-
-          <div className='mb-3'>
-            <label
-              htmlFor='fare'
-              className='block text-sm font-medium text-gray-700'
-            >
-              Predicted Fare:
-            </label>
-            <p className='text-lg font-bold'>{apiResponse.fare}</p>
-          </div>
-
-          <div className='mb-3'>
-            <label
-              htmlFor='duration'
-              className='block text-sm font-medium text-gray-700'
-            >
-              Predicted Duration:
-            </label>
-            <p className='text-lg font-bold'>{apiResponse.duration}</p>
-          </div>
-        </div>
+        <Prediction fare={apiResponse.fare} duration={apiResponse.duration} />
       )}
     </div>
   );

@@ -35,8 +35,7 @@ const TeamPage = () => {
     },
     {
       name: 'Sergio Buzzi',
-      profilePicture:
-        'https://media.licdn.com/dms/image/C4E03AQGyx0RbSQDfnA/profile-displayphoto-shrink_800_800/0/1571975474548?e=1709164800&v=beta&t=9U_J-HUhqkh-7WG1HbeHt1NiVJKVJ8KweY0zC2YyCws',
+      profilePicture: 'https://avatars.githubusercontent.com/u/12287751?v=4',
       githubUsername: 'Dotto-Luis',
     },
     // Add more team members as needed
