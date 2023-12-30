@@ -30,6 +30,13 @@ if os.path.exists("encoders.pkl"):
 else:
     print("Encoders model not found!")
 
+if os.path.exists("avg_speed_dict.pkl"):
+    with open("avg_speed_dict.pkl", "rb") as avg_speed_dict_fd:
+        avg_speed_dict = pickle.load(avg_speed_dict_fd)
+else:
+    print("Average speed dictionary not found!")
+
+
 app = Flask(__name__)
 
 
@@ -41,7 +48,7 @@ def predict_trip(trip_distance, pickup_date, pickup_time):
         "tpep_pickup_datetime": [pd.to_datetime(tpep_pickup_datetime)],
     }
     df = pd.DataFrame(data)
-    df = preprocessing.add_features(df)
+    df,_ = preprocessing.add_features(df, avg_speed_dict)
     df.drop(columns="tpep_pickup_datetime", inplace=True)
     for encoder_model in encoders:
         encoder, col = encoder_model
