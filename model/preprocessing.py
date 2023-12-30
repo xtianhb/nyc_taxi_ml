@@ -151,6 +151,7 @@ def build_avg_speed_feature(df: pd.DataFrame):
     df_avg_speed = df[["hour_of_day", "avg_speed"]]
     avg_speed = df_avg_speed.groupby(["hour_of_day"]).mean()
     avg_speed_dict = avg_speed.to_dict()
+    #print(avg_speed_dict)
     return df, avg_speed_dict
 
 
@@ -223,7 +224,6 @@ def add_features(df: pd.DataFrame, avg_speed_dict=None):
     # order of features is important!
     df = add_hour_of_day(df)
     df = add_rush_hour(df)
-    #df = add_hour_zone(df)
     df = add_day_of_week(df)
     df = add_trip_d2(df)
 
@@ -243,9 +243,9 @@ def create_one_hot_encodings(df: pd.DataFrame, features: str):
     if "vendor_id" in features:
         df, encoder = add_vendor_encoding(df)
         encoders.append(encoder)
-    if "day_of_week" in features:
-        df, encoder = add_dayofweek_encoding(df)
-        encoders.append(encoder)
+    #if "day_of_week" in features:
+    #    df, encoder = add_dayofweek_encoding(df)
+    #    encoders.append(encoder)
     if "hour_zone" in features:
         df, encoder = add_hourzone_encoding(df)
         encoders.append(encoder)

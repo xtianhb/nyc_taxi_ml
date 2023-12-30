@@ -5,33 +5,39 @@ from flask import Flask, request, jsonify, Response
 import preprocessing
 import pickle
 
+
 model_prefix = os.environ.get("MODEL_PREFIX", "lgbm")
-model_name_td = f"{model_prefix}_model_td.pkl"
-model_name_fa = f"{model_prefix}_model_fa.pkl"
+model_name_td = f"{model_prefix}_model_td.model"
+model_name_fa = f"{model_prefix}_model_fa.model"
 
 print(model_name_td)
 print(model_name_fa)
 
-if os.path.exists(model_name_td):
-    with open(model_name_td, "rb") as model_td_fd:
-        model_td = pickle.load(model_td_fd)
+if model_prefix == "lgbm":
+    import lightgbm as lgb
+    model_td = lgb.Booster(model_file=model_name_td)
+    model_fa = lgb.Booster(model_file=model_name_fa)
 else:
-    print("TD model not found!")
+    if os.path.exists(model_name_td):
+        with open(model_name_td, "rb") as model_td_fd:
+            model_td = pickle.load(model_td_fd)
+    else:
+        print("TD model not found!")
 
-if os.path.exists(model_name_fa):
-    with open(model_name_fa, "rb") as model_fa_fd:
-        model_fa = pickle.load(model_fa_fd)
-else:
-    print("FA model not found!")
+    if os.path.exists(model_name_fa):
+        with open(model_name_fa, "rb") as model_fa_fd:
+            model_fa = pickle.load(model_fa_fd)
+    else:
+        print("FA model not found!")
 
-if os.path.exists("encoders.pkl"):
-    with open("encoders.pkl", "rb") as encoders_file:
+if os.path.exists("encoders.model"):
+    with open("encoders.model", "rb") as encoders_file:
         encoders = pickle.load(encoders_file)
 else:
     print("Encoders model not found!")
 
-if os.path.exists("avg_speed_dict.pkl"):
-    with open("avg_speed_dict.pkl", "rb") as avg_speed_dict_fd:
+if os.path.exists("avg_speed_dict.model"):
+    with open("avg_speed_dict.model", "rb") as avg_speed_dict_fd:
         avg_speed_dict = pickle.load(avg_speed_dict_fd)
 else:
     print("Average speed dictionary not found!")
