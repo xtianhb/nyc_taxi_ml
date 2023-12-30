@@ -283,6 +283,40 @@ h1 {
 
 /* loading ............................. */
 
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #d77d1e;
+  padding: 20px;
+  border-radius: 4px;
+  outline: none; /* Remove default outline on focus */
+  z-index: 1000;
+}
+
+.overlay {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  z-index: 999;
+}
+
+.overlay--after-open {
+  opacity: 1;
+}
+
+.overlay--before-close {
+  opacity: 0;
+}
+
+.modal-content {
+  text-align: center;
+}
+
 @media screen and (max-width: 767px) {
   .navbar-brand {
     display: none;

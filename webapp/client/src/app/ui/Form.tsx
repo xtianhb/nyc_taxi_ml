@@ -11,6 +11,9 @@ import Loading from '../loading';
 import Map from './Map';
 import { getPrediction } from '../../helpers/data';
 import Prediction from './Prediction';
+import ErrorModal from './ErrorModal';
+import ResultModal from './ResultModal';
+import Link from 'next/link';
 const libraryPlace = ['places'];
 
 interface ApiResponse {
@@ -52,47 +55,79 @@ const Form: React.FC = () => {
     []
   );
 
-  const calculateDistance = useCallback(async () => {
-    if (pickUpRef.current?.value === '' || dropOffRef.current?.value === '') {
-      return;
-    }
-    // eslint-disable-next-line no-undef
-    const directionsService = new google.maps.DirectionsService();
-    const results = await directionsService.route({
-      origin: pickUpRef.current?.value || '',
-      destination: dropOffRef.current?.value || '',
-      travelMode: google.maps.TravelMode.DRIVING,
-    });
-    setDirectionsResponse(results);
-    const distance = results.routes[0]?.legs[0]?.distance;
-    if (distance) {
-      setDistance(distance.text);
-    } else {
-      console.error('Distance information not available.');
-    }
-  }, [pickUpRef, dropOffRef]);
+  const [resultModalIsOpen, setResultModalIsOpen] = useState(false);
 
+  const openResultModal = () => {
+    setResultModalIsOpen(true);
+  };
+
+  const closeResultModal = () => {
+    setResultModalIsOpen(false);
+  };
+
+  const [errorModalIsOpen, setErrorModalIsOpen] = useState(false);
+
+  const openErrorModal = () => {
+    setErrorModalIsOpen(true);
+  };
+
+  const closeErrorModal = () => {
+    setErrorModalIsOpen(false);
+  };
   function clearRoute() {
     setDirectionsResponse(null);
     setDistance('');
+    setPickup_date('');
+    setPickup_time('');
     pickUpRef.current!.value = '';
     dropOffRef.current!.value = '';
   }
 
+  const calculateDistance = useCallback(async () => {
+    if (pickUpRef.current?.value === '' || dropOffRef.current?.value === '') {
+      return;
+    }
+
+    try {
+      const directionsService = new google.maps.DirectionsService();
+      const results = await directionsService.route({
+        origin: pickUpRef.current?.value || '',
+        destination: dropOffRef.current?.value || '',
+        travelMode: google.maps.TravelMode.DRIVING,
+      });
+
+      setDirectionsResponse(results);
+
+      const distance = results.routes[0]?.legs[0]?.distance;
+      if (distance) {
+        setDistance(distance.text);
+
+        // Move the prediction logic here
+        const mi = distance.text.split(' ');
+        const distanceNumber = mi[0];
+        const data = {
+          trip_distance: distanceNumber,
+          pickup_date,
+          pickup_time,
+        };
+
+        const res = await getPrediction(data);
+        setapiResponse(res.data);
+        openResultModal();
+      } else {
+        console.error('Distance information not available.');
+        openErrorModal();
+      }
+    } catch (error) {
+      console.error('Error calculating distance:', error);
+      openErrorModal();
+    }
+  }, [pickUpRef, dropOffRef, pickup_date, pickup_time]);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    var mi: any = distance?.split(' ');
-    var distanceNumber = mi[0];
-    const data = { trip_distance: distanceNumber, pickup_date, pickup_time };
-    console.log('Datos: ', data);
-    try {
-      const res: any = await getPrediction(data);
-      console.log('response nextjs: ', res);
-      setapiResponse(res.data);
-      console.log(apiResponse);
-    } catch (error) {
-      console.log(error);
-    }
+    calculateDistance();
+    clearRoute();
   };
 
   if (!isLoaded) {
@@ -100,22 +135,27 @@ const Form: React.FC = () => {
   }
 
   return (
-    <div className='container mx-auto mt-5 p-4 lg:max-w-4xl'>
-      {/* Pickup and Dropoff Location Inputs */}
-      <div className='flex flex-col lg:flex-row lg:space-x-4'>
-        <div className='mb-4 lg:w-1/2 lg:flex lg:flex-col'>
+    <div className='container mx-auto mt-10 mb-10 px-4 lg:px-0'>
+      <form
+        onSubmit={handleSubmit}
+        className='max-w-3/4 mx-auto flex flex-col lg:flex-row xl:w-3/4 2xl:w-4/5'
+      >
+        {/* Left Side: Form */}
+        <div className='lg:w-1/2 lg:pr-4'>
+          {/* Location Inputs */}
           <div className='mb-4'>
             <label
               htmlFor='pickup_location'
               className='block text-gray-700 font-bold mb-2'
             >
-              Pickup Location:...
+              Pickup Location:
             </label>
             <Autocomplete>
               <input
                 type='text'
-                className='form-input w-full border border-gray-300 rounded-md'
+                className='form-input w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-yellow-500'
                 ref={pickUpRef}
+                required
               />
             </Autocomplete>
           </div>
@@ -130,84 +170,90 @@ const Form: React.FC = () => {
             <Autocomplete>
               <input
                 type='text'
-                className='form-input w-full border border-gray-300 rounded-md'
+                className='form-input w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-yellow-500'
                 ref={dropOffRef}
+                required
               />
             </Autocomplete>
 
-            {/* Distance Button */}
-            <div className='text-center mt-4'>
-              <button
-                type='button'
-                className='btn-primary btn-lg font-semibold text-white'
-                onClick={() => {
-                  calculateDistance();
-                  clearRoute();
-                }}
-              >
-                Calculate Distance
-              </button>
-            </div>
             {distance !== null && (
-              <div className='mt-4 text-center'>
+              <div className='mt-2 text-center'>
                 <p className='font-bold'>Distance: {distance}</p>
               </div>
             )}
           </div>
+
+          {/* Date and Time Inputs */}
+          <div className='flex flex-col lg:flex-row mb-4 space-y-4 lg:space-y-0'>
+            <div className='lg:w-1/2'>
+              <label
+                htmlFor='pickup_date'
+                className='block text-gray-700 font-bold mb-2'
+              >
+                Date:
+              </label>
+              <input
+                type='date'
+                className='form-input w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-yellow-500'
+                name='pickup_date'
+                value={pickup_date}
+                onChange={handleDateChange}
+                required
+              />
+            </div>
+
+            <div className='lg:w-1/2'>
+              <label
+                htmlFor='time'
+                className='block text-gray-700 font-bold mb-2'
+              >
+                Time (24-hour):
+              </label>
+              <input
+                type='time'
+                className='form-input w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-yellow-500'
+                name='time'
+                value={pickup_time}
+                onChange={handleTimeChange}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Predict Button */}
+          <div className='text-center'>
+            <button
+              type='submit'
+              className='bg-yellow-500 text-white py-2 px-4 rounded-full hover:bg-yellow-600 focus:outline-none'
+            >
+              <span className='font-semibold'>Predict</span>
+            </button>
+          </div>
         </div>
 
         {/* Right Side: Map */}
-        <Map center={center} directionsResponse={directionsResponse} />
-      </div>
-      <form onSubmit={handleSubmit} className='mx-auto max-w-md mt-10'>
-        {/* Date Input */}
-        <div className='flex space-x-4'>
-          <div className='mb-4 flex-1'>
-            <label
-              htmlFor='pickup_date'
-              className='block text-gray-700 font-bold mb-2'
-            >
-              Date:
-            </label>
-            <input
-              type='date'
-              className='form-input w-full border border-gray-300 rounded-md'
-              name='pickup_date'
-              value={pickup_date}
-              onChange={handleDateChange}
-              required
-            />
-          </div>
-
-          {/* Time Input */}
-          <div className='mb-4 flex-1'>
-            <label
-              htmlFor='time'
-              className='block text-gray-700 font-bold mb-2'
-            >
-              Time (24-hour):
-            </label>
-            <input
-              type='time'
-              className='form-input w-full border border-gray-300 rounded-md'
-              name='time'
-              value={pickup_time}
-              onChange={handleTimeChange}
-              required
-            />
-          </div>
-        </div>
-
-        {/* Predict Button */}
-        <div className='text-center'>
-          <button type='submit' className='btn-primary btn-lg'>
-            <span className='font-semibold'>Predict</span>
-          </button>
+        <div className='lg:w-full mt-4 lg:mt-0'>
+          <Map center={center} directionsResponse={directionsResponse} />
         </div>
       </form>
       {apiResponse && (
         <Prediction fare={apiResponse.fare} duration={apiResponse.duration} />
       )}
+      {/* <ErrorModal
+        isOpen={errorModalIsOpen}
+        onClose={closeErrorModal}
+        // title={modalTitle}
+        // message={modalMessage}
+        title={'Error'}
+        message={'Este es un error'}
+      />
+
+      <ResultModal
+        isOpen={resultModalIsOpen}
+        onClose={closeResultModal}
+        fare={apiResponse?.fare || 0}
+        duration={apiResponse?.duration || 0}
+      /> */}
     </div>
   );
 };

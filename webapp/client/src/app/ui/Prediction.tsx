@@ -7,7 +7,7 @@ interface PredictionProps {
 
 const Prediction: React.FC<PredictionProps> = ({ fare, duration }) => {
   return (
-    <div className='container mx-auto mt-5 result-container'>
+    <div className='container mx-auto mt-5 result-container' id='result'>
       <h2 className='mb-4 text-2xl font-semibold text-yellow-500'>
         Prediction Result
       </h2>

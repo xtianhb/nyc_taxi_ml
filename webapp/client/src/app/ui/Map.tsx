@@ -7,10 +7,8 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
-  console.log('render:', center, directionsResponse);
-
   return (
-    <div className='lg:w-1/2'>
+    <div className='lg:w-full'>
       {/* GoogleMap */}
       {/* Display Distance */}
 
@@ -24,6 +22,24 @@ const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
             streetViewControl: false,
             mapTypeControl: false,
             fullscreenControl: false,
+            styles: [
+              {
+                featureType: 'all',
+                elementType: 'geometry',
+              },
+              {
+                featureType: 'all',
+                elementType: 'labels.text.stroke',
+                stylers: [
+                  {
+                    visibility: 'on',
+                  },
+                  {
+                    color: '#EA9820',
+                  },
+                ],
+              },
+            ],
           }}
         >
           <Marker position={center} />
