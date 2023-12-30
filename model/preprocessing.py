@@ -19,7 +19,6 @@ features = [
     "trip_distance",
     "hour_of_day",
     "rush_hour",
-    "hour_zone",
     "day_of_week",
     "trip_d2",
     "avg_speed"
@@ -224,7 +223,7 @@ def add_features(df: pd.DataFrame, avg_speed_dict=None):
     # order of features is important!
     df = add_hour_of_day(df)
     df = add_rush_hour(df)
-    df = add_hour_zone(df)
+    #df = add_hour_zone(df)
     df = add_day_of_week(df)
     df = add_trip_d2(df)
 

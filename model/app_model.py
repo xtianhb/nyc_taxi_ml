@@ -69,9 +69,9 @@ def predict_trip(trip_distance, pickup_date, pickup_time):
 @app.route("/test", methods=["GET"])
 def test():
     try:
-        pickup_date = "2023/12/12"
-        pickup_time = "12:15:12"
-        trip_distance = "5.5"
+        pickup_date = "2022/05/16"
+        pickup_time = "12:00:00"
+        trip_distance = "1.0"
         y_fa, y_td = predict_trip(trip_distance, pickup_date, pickup_time)
         return jsonify(
             {
