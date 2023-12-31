@@ -9,7 +9,7 @@ const Docs = () => {
       </h1>
       <Image
         src='/taxi.gif'
-        alt='Project Workflow Screenshot'
+        alt='Project Workflow'
         width={500}
         height={500}
         // className='w-full mb-8'

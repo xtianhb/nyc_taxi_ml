@@ -317,6 +317,577 @@ h1 {
   text-align: center;
 }
 
+/* -----------------------------------------------------------Taxi ----------------------------------------------------------------- */
+.icon {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #aed7dc;
+}
+.taxi {
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+  width: 500px;
+  height: 500px;
+  transform: translateX(-50%);
+}
+/*Road-Start*/
+.taxi .road {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-50%) translateY(-50%);
+}
+.taxi .road div:nth-child(1) {
+  position: absolute;
+  left: 50.5%;
+  bottom: 0%;
+  width: 70%;
+  height: 44%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+.taxi .road div:nth-child(1):before,
+.road div:nth-child(1):after {
+  content: '';
+  position: absolute;
+  background-color: #333;
+}
+.taxi .road div:nth-child(1):before {
+  left: 37%;
+  top: 50%;
+  width: 50%;
+  height: 200%;
+  transform: translateX(-50%) translateY(-50%) rotateZ(15deg);
+}
+.taxi .road div:nth-child(1):after {
+  left: 63%;
+  top: 50%;
+  width: 50%;
+  height: 200%;
+  transform: translateX(-50%) translateY(-50%) rotateZ(-15deg);
+}
+.taxi .road div:nth-child(2) {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  width: 11%;
+  height: 10%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  animation: animateRoad 0.5s linear infinite;
+}
+@keyframes animateRoad {
+  0% {
+    top: 120%;
+  }
+  100% {
+    top: 85%;
+  }
+}
+.taxi .road div:nth-child(2):before,
+.road div:nth-child(2):after {
+  content: '';
+  position: absolute;
+  background-color: #fff;
+}
+.taxi .road div:nth-child(2):before {
+  width: 50%;
+  height: 200%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-75%) translateY(-50%) rotateZ(5deg);
+}
+.taxi .road div:nth-child(2):after {
+  width: 50%;
+  height: 200%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-25%) translateY(-50%) rotateZ(-5deg);
+}
+.taxi .road div:nth-child(3) {
+  position: absolute;
+  left: 50%;
+  bottom: 19%;
+  width: 9%;
+  height: 9%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  animation: animateRoad2 0.5s linear infinite;
+}
+@keyframes animateRoad2 {
+  0% {
+    top: 85%;
+  }
+  100% {
+    top: 60%;
+  }
+}
+.taxi .road div:nth-child(3):before,
+.road div:nth-child(3):after {
+  content: '';
+  position: absolute;
+  background-color: #fff;
+}
+.taxi .road div:nth-child(3):before {
+  width: 50%;
+  height: 200%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-75%) translateY(-50%) rotateZ(5deg);
+}
+.taxi .road div:nth-child(3):after {
+  width: 50%;
+  height: 200%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-25%) translateY(-50%) rotateZ(-5deg);
+}
+.taxi .road div:nth-child(4) {
+  position: absolute;
+  left: 50%;
+  bottom: 32%;
+  width: 7%;
+  height: 8%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  animation: animateRoad3 0.5s linear infinite;
+}
+@keyframes animateRoad3 {
+  0% {
+    top: 60%;
+  }
+  100% {
+    top: 50%;
+  }
+}
+.taxi .road div:nth-child(4):before,
+.road div:nth-child(4):after {
+  content: '';
+  position: absolute;
+  background-color: #fff;
+}
+.taxi .road div:nth-child(4):before {
+  width: 50%;
+  height: 200%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-75%) translateY(-50%) rotateZ(5deg);
+}
+.taxi .road div:nth-child(4):after {
+  width: 50%;
+  height: 200%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-25%) translateY(-50%) rotateZ(-5deg);
+}
+.taxi .road div:nth-child(5) {
+  position: absolute;
+  left: 50.4%;
+  bottom: 0%;
+  width: 70%;
+  height: 44%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+.taxi .road div:nth-child(5):before,
+.road div:nth-child(5):after {
+  content: '';
+  position: absolute;
+  background-color: #fff;
+}
+.taxi .road div:nth-child(5):before {
+  left: 50%;
+  top: 50%;
+  width: 2%;
+  height: 120%;
+  transform: translateX(1760%) translateY(-50%) rotateZ(-15deg);
+}
+.taxi .road div:nth-child(5):after {
+  left: 50%;
+  top: 50%;
+  width: 2%;
+  height: 120%;
+  transform: translateX(-1855%) translateY(-50%) rotateZ(15deg);
+}
+/*Road-End*/
+/*Taxi-Start*/
+.shape {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: animateTaxi 0.15s linear infinite;
+}
+@keyframes animateTaxi {
+  0% {
+    top: 50%;
+  }
+  100% {
+    top: 50.3%;
+  }
+}
+/*Left-Tyer*/
+.shape div:nth-child(1) {
+  position: absolute;
+  width: 8%;
+  height: 10%;
+  left: 34%;
+  top: 70%;
+  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;
+  background-color: #0f0f0f;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*Right-tyer*/
+.shape div:nth-child(2) {
+  position: absolute;
+  width: 8%;
+  height: 10%;
+  left: 67%;
+  top: 70%;
+  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;
+  background-color: #0f0f0f;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*Bonnet*/
+.shape div:nth-child(3) {
+  position: absolute;
+  width: 55%;
+  height: 5%;
+  left: 50.5%;
+  top: 64.9%;
+  border-radius: 5px;
+  background-color: #444;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*Engine-Cab*/
+.shape div:nth-child(4) {
+  position: absolute;
+  width: 51%;
+  height: 8%;
+  left: 50.5%;
+  top: 58.5%;
+  background-color: #fed102;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*Hood*/
+.shape div:nth-child(5) {
+  position: absolute;
+  width: 51%;
+  height: 5%;
+  left: 50.5%;
+  top: 52.3%;
+  overflow: hidden;
+  transform: translateX(-50%) translateY(-50%);
+}
+.shape div:nth-child(5):before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 67.8%;
+  top: 50%;
+  background-color: #fee236;
+  transform: translateX(-50%) translateY(-50%) skew(25deg);
+}
+.shape div:nth-child(5):after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 32%;
+  top: 50%;
+  background-color: #fee236;
+  transform: translateX(-50%) translateY(-50%) skew(-25deg);
+}
+/*Glass-Frame*/
+.shape div:nth-child(6) {
+  position: absolute;
+  width: 47%;
+  height: 18%;
+  left: 50.5%;
+  top: 40.9%;
+  overflow: hidden;
+  border: 0px solid black;
+  transform: translateX(-50%) translateY(-50%);
+}
+.shape div:nth-child(6):before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 36%;
+  top: 50%;
+  border-top-left-radius: 25px;
+  background-color: #f4d900;
+  transform: translateX(-50%) translateY(-50%) skew(-15deg);
+}
+.shape div:nth-child(6):after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 64%;
+  top: 50%;
+  border-top-right-radius: 25px;
+  background-color: #f4d900;
+  transform: translateX(-50%) translateY(-50%) skew(15deg);
+}
+/*Name-Plate*/
+.shape div:nth-child(7) {
+  position: absolute;
+  width: 15%;
+  height: 5%;
+  left: 50%;
+  top: 29.5%;
+  overflow: hidden;
+  transform: translateX(-50%) translateY(-50%);
+}
+.shape div:nth-child(7):before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 61%;
+  top: 50%;
+  background-color: #fff;
+  transform: translateX(-50%) translateY(-50%) skew(20deg);
+}
+.shape div:nth-child(7):after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 40%;
+  top: 50%;
+  background-color: #fff;
+  transform: translateX(-50%) translateY(-50%) skew(-20deg);
+}
+/*Glass*/
+.shape div:nth-child(8) {
+  position: absolute;
+  width: 43%;
+  height: 16%;
+  left: 50.5%;
+  top: 42%;
+  overflow: hidden;
+  border: 0px solid black;
+  transform: translateX(-50%) translateY(-50%);
+}
+.shape div:nth-child(8):before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 36%;
+  top: 50%;
+  border-top-left-radius: 20px;
+  background-color: #97dfff;
+  transform: translateX(-50%) translateY(-50%) skew(-15deg);
+}
+.shape div:nth-child(8):after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 64%;
+  top: 50%;
+  border-top-right-radius: 20px;
+  background-color: #97dfff;
+  transform: translateX(-50%) translateY(-50%) skew(15deg);
+}
+/*Left-Headlight*/
+.shape div:nth-child(9) {
+  position: absolute;
+  width: 10%;
+  height: 5%;
+  left: 31.5%;
+  top: 58.7%;
+  overflow: hidden;
+  border-radius: 10%;
+  background-color: #f0f0f0;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*Left-Fog-Light*/
+.shape div:nth-child(9):before {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  left: 15%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  animation: animateLight 0.2s linear infinite;
+}
+@keyframes animateLight {
+  0% {
+    background-color: orangered;
+  }
+  100% {
+    background-color: darkorange;
+  }
+}
+/*Right-Headlight*/
+.shape div:nth-child(10) {
+  position: absolute;
+  width: 10%;
+  height: 5%;
+  left: 69.2%;
+  top: 58.7%;
+  overflow: hidden;
+  border-radius: 10%;
+  background-color: #f0f0f0;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*Right-Fog-Light*/
+.shape div:nth-child(10):before {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  left: 85%;
+  top: 50%;
+  background-color: orange;
+  transform: translateX(-50%) translateY(-50%);
+  animation: animateLight 0.2s linear infinite;
+}
+/*Engine-Grille-Start*/
+/*1*/
+.shape div:nth-child(11) {
+  position: absolute;
+  width: 20%;
+  height: 0.2%;
+  left: 50%;
+  top: 61%;
+  background-color: #b59502;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*2*/
+.shape div:nth-child(12) {
+  position: absolute;
+  width: 20%;
+  height: 0.2%;
+  left: 50%;
+  top: 60%;
+  background-color: #b59502;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*3*/
+.shape div:nth-child(13) {
+  position: absolute;
+  width: 20%;
+  height: 0.2%;
+  left: 50%;
+  top: 59%;
+  background-color: #b59502;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*4*/
+.shape div:nth-child(14) {
+  position: absolute;
+  width: 20%;
+  height: 0.2%;
+  left: 50%;
+  top: 58%;
+  background-color: #b59502;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*5*/
+.shape div:nth-child(15) {
+  position: absolute;
+  width: 20%;
+  height: 0.2%;
+  left: 50%;
+  top: 57%;
+  background-color: #b59502;
+  transform: translateX(-50%) translateY(-50%);
+}
+/*Engine-Grille-End*/
+/*Right-Side-Mirror*/
+.shape div:nth-child(16) {
+  position: absolute;
+  left: 77%;
+  top: 44%;
+  width: 12%;
+  height: 10%;
+  transform: translateX(-50%) translateY(-50%) rotateZ(-5deg);
+}
+.shape div:nth-child(16):before,
+.shape div:nth-child(16):after {
+  position: absolute;
+  content: '';
+  background-color: #f4d900;
+}
+.shape div:nth-child(16):before {
+  width: 50%;
+  height: 14%;
+  bottom: 0%;
+  border-bottom-right-radius: 20%;
+}
+.shape div:nth-child(16):after {
+  width: 48%;
+  height: 46%;
+  bottom: 1%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-right-radius: 50%;
+  border-top-right-radius: 30%;
+  border-top-left-radius: 20%;
+}
+/*Left-Side-Mirror*/
+.shape div:nth-child(17) {
+  position: absolute;
+  left: 23.7%;
+  top: 44%;
+  width: 12%;
+  height: 10%;
+  transform: translateX(-50%) translatey(-50%) rotateY(180deg) rotateZ(-5deg);
+}
+.shape div:nth-child(17):before,
+.shape div:nth-child(17):after {
+  position: absolute;
+  content: '';
+  background-color: #f4d900;
+}
+.shape div:nth-child(17):before {
+  width: 50%;
+  height: 14%;
+  bottom: 0%;
+  border-bottom-right-radius: 20%;
+}
+.shape div:nth-child(17):after {
+  width: 48%;
+  height: 46%;
+  bottom: 1%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-right-radius: 50%;
+  border-top-right-radius: 30%;
+  border-top-left-radius: 15%;
+}
+/*Taxi-Name*/
+.shape .taxi-name {
+  position: absolute;
+  left: 50%;
+  top: 29.5%;
+  color: #a8a7ad;
+  font-size: 20px;
+  transform: translateX(-50%) translatey(-50%);
+}
+/*Taxi-End*/
+
 @media screen and (max-width: 767px) {
   .navbar-brand {
     display: none;

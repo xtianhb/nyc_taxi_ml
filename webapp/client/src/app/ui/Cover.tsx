@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 const Cover = () => {
   return (
     <div className='hero-cover relative bg-cover bg-center min-h-[60vh]'>

@@ -1,10 +1,6 @@
 import React from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
-
-interface MapProps {
-  center: { lat: number; lng: number };
-  directionsResponse: google.maps.DirectionsResult | null;
-}
+import { MapProps } from '@/helpers/definitions';
 
 const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
   return (

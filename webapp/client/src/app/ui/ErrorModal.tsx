@@ -1,12 +1,5 @@
 import React from 'react';
-import Modal from 'react-modal';
-
-interface ErrorModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  message: string;
-}
+import { ErrorModalProps } from '@/helpers/definitions';
 
 const ErrorModal: React.FC<ErrorModalProps> = ({
   isOpen,
