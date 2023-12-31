@@ -3,7 +3,7 @@ import { PredictionProps } from '@/helpers/definitions';
 
 const Prediction: React.FC<PredictionProps> = ({ fare, duration }) => {
   return (
-    <div className='container mx-auto mt-5 result-container'>
+    <div className='mx-auto mt-5 text-center'>
       <h2 className='mb-4 text-2xl font-semibold text-yellow-500'>
         Prediction Result
       </h2>

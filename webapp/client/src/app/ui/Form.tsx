@@ -6,6 +6,7 @@ import Map from './Map';
 import Prediction from './Prediction';
 import ErrorModal from './ErrorModal';
 import { ApiResponse } from '@/helpers/definitions';
+import Loading from '../loading';
 const libraryPlace = ['places'];
 
 const Form: React.FC = () => {
@@ -101,19 +102,19 @@ const Form: React.FC = () => {
       openErrorModal();
     }
   }, [pickUpRef, dropOffRef, pickup_date, pickup_time]);
-
+  const paragraphRef = useRef<HTMLDivElement>(null);
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     calculateDistance();
     clearRoute();
+    // paragraphRef.current?.scrollIntoView({
+    //   behavior: 'smooth',
+    //   block: 'start',
+    // });
   };
 
   if (!isLoaded) {
-    return (
-      <div className='flex justify-center items-center h-screen'>
-        <p>Loading...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -209,7 +210,7 @@ const Form: React.FC = () => {
           <Map center={center} directionsResponse={directionsResponse} />
         </div>
       </form>
-      <div>
+      <div ref={paragraphRef}>
         {apiResponse && (
           <Prediction fare={apiResponse.fare} duration={apiResponse.duration} />
         )}
