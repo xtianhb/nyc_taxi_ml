@@ -107,10 +107,6 @@ const Form: React.FC = () => {
     event.preventDefault();
     calculateDistance();
     clearRoute();
-    // paragraphRef.current?.scrollIntoView({
-    //   behavior: 'smooth',
-    //   block: 'start',
-    // });
   };
 
   if (!isLoaded) {
@@ -131,7 +127,18 @@ const Form: React.FC = () => {
             >
               Pickup Location:
             </label>
-            <Autocomplete>
+            <Autocomplete
+              options={{
+                strictBounds: true,
+                componentRestrictions: { country: 'us' },
+                bounds: {
+                  east: -73.70018,
+                  north: 40.915568,
+                  south: 40.496044,
+                  west: -74.25573,
+                },
+              }}
+            >
               <input
                 type='text'
                 className='form-input w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-yellow-500'
@@ -148,7 +155,18 @@ const Form: React.FC = () => {
             >
               Dropoff Location:
             </label>
-            <Autocomplete>
+            <Autocomplete
+              options={{
+                strictBounds: true,
+                componentRestrictions: { country: 'us' },
+                bounds: {
+                  east: -73.70018,
+                  north: 40.915568,
+                  south: 40.496044,
+                  west: -74.25573,
+                },
+              }}
+            >
               <input
                 type='text'
                 className='form-input w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-yellow-500'
