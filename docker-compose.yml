@@ -4,11 +4,21 @@ services:
   api:
     image: flask_api
     build:
-      context: ./api
+      context: ./webapp/api
     ports:
       - 8000:8000
     volumes:
-      - ./api:/app
+      - ./webapp/api:/app
+  client:
+    image: nextjs
+    build:
+      context: ./webapp/client
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    volumes:
+      - ./webapp/client:/app
   modelsvc:
     image: model
     build:
