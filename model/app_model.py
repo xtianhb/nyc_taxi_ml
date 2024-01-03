@@ -102,7 +102,7 @@ def predict_endpoint():
         trip_distance = data["trip_distance"]
         pickup_date = data["pickup_date"]
         pickup_time = data["pickup_time"]
-        y_td, y_fa = predict_trip(trip_distance, pickup_date, pickup_time)
+        y_fa, y_td = predict_trip(trip_distance, pickup_date, pickup_time)
         return jsonify(
             {
                 "status": ("OK", 200),

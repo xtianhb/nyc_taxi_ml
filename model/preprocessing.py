@@ -21,7 +21,7 @@ features = [
     "rush_hour",
     "day_of_week",
     "trip_d2",
-    "avg_speed"
+    "avg_speed",
 ]
 
 # Don't change targets
@@ -150,8 +150,7 @@ def build_avg_speed_feature(df: pd.DataFrame):
     df = add_avg_speed(df)
     df_avg_speed = df[["hour_of_day", "avg_speed"]]
     avg_speed = df_avg_speed.groupby(["hour_of_day"]).mean()
-    avg_speed_dict = avg_speed.to_dict()
-    #print(avg_speed_dict)
+    avg_speed_dict = avg_speed.to_dict()["avg_speed"]
     return df, avg_speed_dict
 
 
@@ -191,17 +190,6 @@ def add_vendor_encoding(df: pd.DataFrame):
     return final_df, (encoder, "VendorID")
 
 
-def add_dayofweek_encoding(df: pd.DataFrame):
-    encoder = OneHotEncoder()
-    encoded_data = encoder.fit_transform(df[["day_of_week"]])
-    encoded_df = pd.DataFrame(
-        encoded_data.toarray(), columns=encoder.get_feature_names_out(["day_of_week"])
-    )
-    final_df = pd.concat([df, encoded_df], axis=1, join="inner")
-    final_df.drop(columns="day_of_week", inplace=True)
-    return final_df, (encoder, "day_of_week")
-
-
 def add_hourzone_encoding(df: pd.DataFrame):
     encoder = OneHotEncoder()
     encoded_data = encoder.fit_transform(df[["hour_zone"]])
@@ -232,7 +220,7 @@ def add_features(df: pd.DataFrame, avg_speed_dict=None):
         df, avg_speed_dict = build_avg_speed_feature(df)
     else:
         print("Using pre-processed average speed dictionary")
-        df["avg_speed"] = avg_speed_dict["avg_speed"][df["hour_of_day"][0]]
+        df["avg_speed"] = avg_speed_dict[df["hour_of_day"][0]]
     return df, avg_speed_dict
 
 
@@ -243,9 +231,6 @@ def create_one_hot_encodings(df: pd.DataFrame, features: str):
     if "vendor_id" in features:
         df, encoder = add_vendor_encoding(df)
         encoders.append(encoder)
-    #if "day_of_week" in features:
-    #    df, encoder = add_dayofweek_encoding(df)
-    #    encoders.append(encoder)
     if "hour_zone" in features:
         df, encoder = add_hourzone_encoding(df)
         encoders.append(encoder)
