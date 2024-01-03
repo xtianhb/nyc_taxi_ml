@@ -15,6 +15,7 @@ print(model_name_fa)
 
 if model_prefix == "lgbm":
     import lightgbm as lgb
+
     model_td = lgb.Booster(model_file=model_name_td)
     model_fa = lgb.Booster(model_file=model_name_fa)
 else:
@@ -54,7 +55,7 @@ def predict_trip(trip_distance, pickup_date, pickup_time):
         "tpep_pickup_datetime": [pd.to_datetime(tpep_pickup_datetime)],
     }
     df = pd.DataFrame(data)
-    df,_ = preprocessing.add_features(df, avg_speed_dict)
+    df, _ = preprocessing.add_features(df, avg_speed_dict)
     df.drop(columns="tpep_pickup_datetime", inplace=True)
     for encoder_model in encoders:
         encoder, col = encoder_model
