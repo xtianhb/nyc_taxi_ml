@@ -10,3 +10,4 @@ fastparquet
 wget
 flask
 joblib
+lightgbm
