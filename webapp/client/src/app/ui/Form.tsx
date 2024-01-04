@@ -56,6 +56,15 @@ const Form: React.FC = () => {
     dropOffRef.current!.value = '';
   }
 
+  const handleNowButtonClick = () => {
+    const now = new Date();
+    const currentDate = now.toISOString().split('T')[0];
+    const currentTime = now.toTimeString().split(' ')[0];
+
+    setPickup_date(currentDate);
+    setPickup_time(currentTime);
+  };
+
   const calculateDistance = useCallback(async () => {
     if (pickUpRef.current?.value === '' || dropOffRef.current?.value === '') {
       return;
@@ -81,8 +90,18 @@ const Form: React.FC = () => {
         try {
           const res = await getPrediction(data);
           console.log('api', res.data);
-          console.log(res.status);
-          setapiResponse(res.data);
+          console.log(res.data.fare, res.data.duration);
+          if (res.data.fare === -1 || res.data.duration === -1) {
+            console.log('Setting error');
+            setError((prevObject) => ({
+              ...prevObject,
+              title: '404',
+              message: 'Try again!',
+            }));
+            openErrorModal();
+          } else {
+            setapiResponse(res.data);
+          }
         } catch (error: any) {
           console.error(error);
           setError((prevObject) => ({
@@ -90,6 +109,7 @@ const Form: React.FC = () => {
             title: error.status,
             message: error.message,
           }));
+          openErrorModal();
         }
       }
     } catch (error: any) {
@@ -182,7 +202,7 @@ const Form: React.FC = () => {
             )}
           </div>
           <div className='flex flex-col lg:flex-row mb-4 space-y-4 lg:space-y-0'>
-            <div className='lg:w-1/2'>
+            <div className='lg:w-1/2 flex flex-col'>
               <label
                 htmlFor='pickup_date'
                 className='block text-gray-700 font-bold mb-2'
@@ -198,7 +218,7 @@ const Form: React.FC = () => {
                 required
               />
             </div>
-            <div className='lg:w-1/2'>
+            <div className='lg:w-1/2 flex flex-col'>
               <label
                 htmlFor='time'
                 className='block text-gray-700 font-bold mb-2'
@@ -214,11 +234,20 @@ const Form: React.FC = () => {
                 required
               />
             </div>
+            <div className='lg:w-1/2 ml-2 flex'>
+              <button
+                type='button'
+                className='bg-yellow-500 px-3 rounded-md text-white self-end p-2'
+                onClick={handleNowButtonClick}
+              >
+                Right now
+              </button>
+            </div>
           </div>
           <div className='text-center'>
             <button
               type='submit'
-              className='bg-yellow-500 text-white py-2 px-4 rounded-full hover:bg-yellow-600 focus:outline-none'
+              className='bg-yellow-500 text-white py-4 px-8 rounded-full hover:bg-yellow-600 focus:outline-none'
             >
               <span className='font-semibold'>Predict</span>
             </button>

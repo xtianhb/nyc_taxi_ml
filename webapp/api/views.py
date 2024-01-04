@@ -1,13 +1,8 @@
 import requests
 from flask import (
     Blueprint,
-    current_app,
-    flash,
     jsonify,
-    redirect,
-    render_template,
     request,
-    url_for,
 )
 
 router = Blueprint("app_router", __name__, template_folder="templates")
@@ -17,7 +12,7 @@ MODEL_URL = "http://modelsvc:5000/predict"
 
 @router.route("/")
 def hello_world():
-    return "<h1>Hello World! This is the API of NYC Taxi Prediction</h1>"
+    return "<h1>Hello World! This is the API of NYC Taxi Prediction. [200] Status</h1>"
 
 
 @router.route("/predict", methods=["POST"])
@@ -47,8 +42,4 @@ def predict():
                 "Error message:", response.text
             )  # Print the error message if request failed
             fare, duration = -1, -1
-
-            # Pass the prediction to the result page
-            # return render_template("result.html", fare=fare, duration=duration)
-            print("backend: ", fare, duration)
         return jsonify({"fare": fare, "duration": duration})
