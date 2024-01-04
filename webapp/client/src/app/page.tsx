@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Form from './ui/Form';
 import Cover from './ui/Cover';
 

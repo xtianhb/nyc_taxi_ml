@@ -7,8 +7,6 @@ services:
       context: ./webapp/api
     ports:
       - 8000:8000
-    volumes:
-      - ./webapp/api:/app
   client:
     image: nextjs
     build:
@@ -17,8 +15,6 @@ services:
       NODE_ENV: production
     ports:
       - 3000:3000
-    volumes:
-      - ./webapp/client:/app
   modelsvc:
     image: model
     build:
