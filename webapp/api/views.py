@@ -17,7 +17,7 @@ MODEL_URL = "http://modelsvc:5000/predict"
 
 @router.route("/")
 def hello_world():
-    return render_template("index.html")
+    return "<h1>Hello World! This is the API of NYC Taxi Prediction</h1>"
 
 
 @router.route("/predict", methods=["POST"])
