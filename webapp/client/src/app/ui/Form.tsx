@@ -202,7 +202,7 @@ const Form: React.FC = () => {
             )}
           </div>
           <div className='flex flex-col lg:flex-row mb-4 space-y-4 lg:space-y-0'>
-            <div className='lg:w-1/2 flex flex-col'>
+            <div className='lg:w-2/5 flex flex-col'>
               <label
                 htmlFor='pickup_date'
                 className='block text-gray-700 font-bold mb-2'
@@ -218,7 +218,7 @@ const Form: React.FC = () => {
                 required
               />
             </div>
-            <div className='lg:w-1/2 flex flex-col'>
+            <div className='lg:w-2/5 flex flex-col'>
               <label
                 htmlFor='time'
                 className='block text-gray-700 font-bold mb-2'
@@ -234,13 +234,13 @@ const Form: React.FC = () => {
                 required
               />
             </div>
-            <div className='lg:w-1/2 ml-2 flex'>
+            <div className='lg:w-1/5 ml-2 flex'>
               <button
                 type='button'
                 className='bg-yellow-500 px-3 rounded-md text-white self-end p-2'
                 onClick={handleNowButtonClick}
               >
-                Right now
+                Now
               </button>
             </div>
           </div>
