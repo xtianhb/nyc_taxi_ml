@@ -220,7 +220,7 @@ def add_features(df: pd.DataFrame, avg_speed_dict=None):
         df, avg_speed_dict = build_avg_speed_feature(df)
     else:
         print("Using pre-processed average speed dictionary")
-        df["avg_speed"] = avg_speed_dict[df["hour_of_day"][0]]
+        df['avg_speed'] = df['hour_of_day'].map(avg_speed_dict)
     return df, avg_speed_dict
 
 
