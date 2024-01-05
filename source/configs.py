@@ -1,5 +1,8 @@
-START_DATASET_URLS = (
+TRAIN_DATASET_URLS = (
     "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-05.parquet",
+)
+TEST_DATASET_URLS = (
+    "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-08.parquet",
 )
 
 AVGSPEED_DATASET_URLS = (
