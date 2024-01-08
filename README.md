@@ -59,8 +59,8 @@ Before you start, you'll need to set up some configurations.
 Create a `.env` file in the root of webapp/client folder of your project like .env.example and add the following variables:
 
 ```
-NEXT_PUBLIC_BACKEND_URL='BACKEND_URL'
-NEXT_PUBLIC_GOOGLE_API_KEY='GOOGLE_MAPS_API_KEY'
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000/
+NEXT_PUBLIC_GOOGLE_API_KEY=GOOGLE_MAPS_API_KEY
 ```
 
 ### Google Maps API Key
