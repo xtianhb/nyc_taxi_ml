@@ -3,21 +3,12 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { TeamMemberProps } from '@/helpers/definitions';
 
-const myLoader = ({
-  src,
-  width,
-  quality,
-}: {
-  src: string;
-  width: number;
-  quality?: number;
-}) => {
+const myLoader = ({ src, width, quality }) => {
   return `https://avatars.githubusercontent.com/u/${src}?s=${width}`;
 };
 
-const TeamMember: React.FC<TeamMemberProps> = ({
+const TeamMember = ({
   name,
   profilePicture,
   githubUsername,

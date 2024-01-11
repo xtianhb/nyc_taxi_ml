@@ -1,7 +1,6 @@
 import React from 'react';
-import { PredictionProps } from '@/helpers/definitions';
 
-const Prediction: React.FC<PredictionProps> = ({ fare, duration }) => {
+const Prediction = ({ fare, duration }) => {
   return (
     <div className='mx-auto mt-5 text-center'>
       <h2 className='mb-4 text-2xl font-semibold text-yellow-500'>

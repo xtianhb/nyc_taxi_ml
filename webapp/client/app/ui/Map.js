@@ -1,8 +1,7 @@
 import React from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
-import { MapProps } from '@/helpers/definitions';
 
-const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
+const Map = ({ center, directionsResponse }) => {
   return (
     <div className='lg:w-full'>
       {/* GoogleMap */}

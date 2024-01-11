@@ -1,15 +1,9 @@
 import React from 'react';
-import { ErrorModalProps } from '@/helpers/definitions';
 
-const ErrorModal: React.FC<ErrorModalProps> = ({
-  isOpen,
-  onClose,
-  title,
-  message,
-}) => {
+const ErrorModal = ({ isOpen, onClose, title, message }) => {
   if (!isOpen) return null;
 
-  const handleClose = (e: any) => {
+  const handleClose = (e) => {
     if (e.target.id === 'wrapper') onClose();
   };
   return (
