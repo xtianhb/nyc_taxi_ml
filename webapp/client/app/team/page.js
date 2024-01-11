@@ -5,41 +5,46 @@ const TeamPage = () => {
   const teamMembers = [
     {
       name: 'Cristian Horacio Belussi',
-      profilePicture: 'https://avatars.githubusercontent.com/u/20509133?v=4',
+      profilePicture: '20509133?v=4',
       githubUsername: 'xtianhb',
+      linkedinUsername: 'xtianhb',
     },
     {
       name: 'Álvaro Ruiz',
-      profilePicture: 'https://avatars.githubusercontent.com/u/58787603?v=4',
+      profilePicture: '58787603?v=4',
       githubUsername: 'alvarorf',
+      linkedinUsername: 'alvaro-r-147818289',
     },
     {
       name: 'Jhoan Najera',
-      profilePicture: 'https://avatars.githubusercontent.com/u/128323811?v=4',
+      profilePicture: '128323811?v=4',
       githubUsername: 'jhoannajera11',
+      linkedinUsername: 'jhoan-najera11',
     },
     {
       name: 'Jorge Damian Bringas',
-      profilePicture: 'https://avatars.githubusercontent.com/u/140633379?v=4',
+      profilePicture: '140633379?v=4',
       githubUsername: 'xtianhb',
+      linkedinUsername: 'jorge-damián-bringas-296b92271',
     },
     {
       name: 'Jose David Nuñez',
-      profilePicture: 'https://avatars.githubusercontent.com/u/78088827?v=4',
+      profilePicture: '78088827?v=4',
       githubUsername: 'josedavidnup',
+      linkedinUsername: 'josedavidnpx',
     },
     {
       name: 'Luis Dotto',
-      profilePicture: 'https://avatars.githubusercontent.com/u/93018629?v=4',
+      profilePicture: '93018629?v=4',
       githubUsername: 'Dotto-Luis',
+      linkedinUsername: 'luisdotto',
     },
     {
       name: 'Sergio Buzzi',
-      profilePicture:
-        'https://media.licdn.com/dms/image/C4E03AQGyx0RbSQDfnA/profile-displayphoto-shrink_800_800/0/1571975474548?e=1709164800&v=beta&t=9U_J-HUhqkh-7WG1HbeHt1NiVJKVJ8KweY0zC2YyCws',
-      githubUsername: 'Dotto-Luis',
+      profilePicture: '12287751?v=4',
+      githubUsername: 'sergiobuzzi',
+      linkedinUsername: 'sergio-martin-buzzi-data-scientist',
     },
-    // Add more team members as needed
   ];
 
   return (

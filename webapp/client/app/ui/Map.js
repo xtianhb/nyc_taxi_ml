@@ -1,16 +1,9 @@
 import React from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
 
-interface MapProps {
-  center: { lat: number; lng: number };
-  directionsResponse: google.maps.DirectionsResult | null;
-}
-
-const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
-  console.log('render:', center, directionsResponse);
-
+const Map = ({ center, directionsResponse }) => {
   return (
-    <div className='lg:w-1/2'>
+    <div className='lg:w-full'>
       {/* GoogleMap */}
       {/* Display Distance */}
 
@@ -24,6 +17,24 @@ const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
             streetViewControl: false,
             mapTypeControl: false,
             fullscreenControl: false,
+            styles: [
+              {
+                featureType: 'all',
+                elementType: 'geometry',
+              },
+              {
+                featureType: 'all',
+                elementType: 'labels.text.stroke',
+                stylers: [
+                  {
+                    visibility: 'on',
+                  },
+                  {
+                    color: '#EA9820',
+                  },
+                ],
+              },
+            ],
           }}
         >
           <Marker position={center} />
@@ -37,4 +48,7 @@ const Map: React.FC<MapProps> = ({ center, directionsResponse }) => {
   );
 };
 
-export default React.memo(Map);
+export default React.memo(Map, (prevProps, nextProps) => {
+  // Only re-render if directionsResponse changes
+  return prevProps.directionsResponse === nextProps.directionsResponse;
+});

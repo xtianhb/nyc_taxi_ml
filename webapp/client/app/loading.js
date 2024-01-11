@@ -1,5 +1,3 @@
-'use client';
-import style from './ui/loading.module.css';
 export default function Loading() {
   return (
     <div className='loadingContainer'>

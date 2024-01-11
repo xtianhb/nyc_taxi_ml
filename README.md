@@ -50,16 +50,78 @@ Before starting to work, let's take a deep overview of the project structure and
 └── requirements.txt
 ```
 
-## Requirement
+## 1. Getting Started with project configurations
 
-- black==23.1.0
-- matplotlib==3.6.3
-- numpy==1.24.2
-- pandas==1.5.3
-- scikit-learn==1.2.1
-- seaborn==0.12.2
+Before you start, you'll need to set up some configurations.
 
-```pip install -r requirements.txt```
+### Environment Variables
+
+Create a `.env` file in the root of webapp/client folder of your project like .env.example and add the following variables:
+
+```
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000/
+NEXT_PUBLIC_GOOGLE_API_KEY=GOOGLE_MAPS_API_KEY
+```
+
+### Google Maps API Key
+
+To obtain a Google Maps API key, follow these steps:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a new project (or select an existing one).
+3. In the sidebar, navigate to "APIs & Services" > "Credentials."
+4. Click on "Create Credentials" and choose "API Key."
+5. Restrict your API key based on your project needs (e.g., restrict it to Maps JavaScript API).
+6. Copy the generated API key.
+
+For a step-by-step tutorial, you can refer to the [Google Maps API Key Setup Guide](https://developers.google.com/maps/documentation/embed/get-api-key).
+
+If you prefer a video walkthrough, watch [this video tutorial](https://www.youtube.com/watch?v=2_HZObVbe-g) on obtaining and configuring your Google Maps API key.
+
+Replace the placeholder GOOGLE_MAPS_API_KEY in your .env file with the actual API key you obtained from the Google Cloud Console.
+
+## 2. Running Model Notebooks Locally
+
+Before running the notebooks, ensure that you have set up a virtual environment and installed the necessary requirements.
+
+### Setting Up Model Environment
+
+```bash
+# Create a virtual environment
+python -m venv venv
+
+# Activate the virtual environment (commands may vary depending on the operating system)
+# On Windows
+venv\Scripts\activate
+# On Unix or MacOS
+source venv/bin/activate
+
+# Install requirements
+pip install -r model/requirements.txt
+```
+
+### Running Notebooks
+
+1. Average Speed Calculation: avg_speed.ipynb
+
+- Navigate to the model/avg_speed.ipynb notebook and run the cells in order.
+
+2. Model Training: model_train.ipynb
+
+- After completing the steps in avg_speed.ipynb, proceed to the model_train.ipynb notebook.
+- Run the cells in order to train the model.
+
+Make sure to activate your virtual environment before launching the Jupyter Notebook server. Additionally, ensure that any dependencies required for the notebooks are installed in your virtual environment.
+
+## 3. Building and running your application
+
+When you're ready, start your application by running:
+`docker compose up --build -d` .
+
+Your application will be available at http://localhost:3000
+
+To stop the services:
+`docker-compose down`
 
 
 ## Project References
