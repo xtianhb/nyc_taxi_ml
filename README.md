@@ -39,14 +39,6 @@ Before starting to work, let's take a deep overview of the project structure and
 │   └── train
 │       └── .gitignore
 │   ├── .gitignore
-├── source
-│   ├── readme.md
-│   └── config.py
-├── tests
-│   ├── __init__.py
-│   ├── conftest.py
-│   ├── test_data_utils.py
-│   └── test_preprocessing.py
 ├── docs
 │   ├── NewYorkCityCabPricing-Report.pdf
 │   ├── data_dictionary_trip_records_yellow.pdf
@@ -65,6 +57,9 @@ Before starting to work, let's take a deep overview of the project structure and
 │   ├── model_train.ipynb
 │   ├── preprocessing.py
 │   └── requirements.txt
+├── source
+│   ├── readme.md
+│   └── config.py
 ├── webapp
 │   ├── readme.md
 │   ├── api
@@ -117,8 +112,7 @@ Before starting to work, let's take a deep overview of the project structure and
 ├── taxi.png
 ├── LICENSE
 ├── NYC_TAXI_ML.ipynb
-├── README.md
-└── requirements.txt
+└── README.md
 ```
 
 ## 1. Getting Started with project configurations
