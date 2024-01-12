@@ -32,19 +32,90 @@ Before starting to work, let's take a deep overview of the project structure and
 
 ```console
 ├── dataset
-│   ├── application_test_aai.csv
-│   ├── application_train_aai.csv
-│   ├── HomeCredit_columns_description.csv
-├── src
-│   ├── __init__.py
-│   ├── config.py
-│   ├── data_utils.py
-│   ├── preprocessing.py
-└── tests
+│   ├── avg_speed
+│   │   └── .gitignore
+│   ├── test
+│   │   └── .gitignore
+│   └── train
+│       └── .gitignore
+│   ├── .gitignore
+├── source
+│   ├── readme.md
+│   └── config.py
+├── tests
 │   ├── __init__.py
 │   ├── conftest.py
 │   ├── test_data_utils.py
 │   └── test_preprocessing.py
+├── docs
+│   ├── NewYorkCityCabPricing-Report.pdf
+│   ├── data_dictionary_trip_records_yellow.pdf
+│   ├── readme.md
+├── eda
+│   ├── eda.ipynb
+│   ├── requirements.txt
+│   ├── readme.md
+├── model
+│   ├── .gitignore
+│   ├── dockerfile
+│   ├── readme.md
+│   ├── app_model.py
+│   ├── avg_speed.ipynb
+│   ├── model_test.ipynb
+│   ├── model_train.ipynb
+│   ├── preprocessing.py
+│   └── requirements.txt
+├── webapp
+│   ├── readme.md
+│   ├── api
+│   │   ├── dockerfile
+│   │   ├── readme.md
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   └── views.y
+│   └── client
+│       ├── .env.example
+│       ├── .gitignore
+│       ├── Dockerfile
+│       ├── njsconfig.json
+│       ├── next.config.js
+│       ├── package.json
+│       ├── postcss.config.json
+│       ├── tailwind.config.json
+│       ├── yarn.lock
+│       ├── app
+│       │   ├── favicon.ico
+│       │   ├── globals.css
+│       │   ├── layout.js
+│       │   ├── loading.js
+│       │   ├── page.js
+│       │   ├── docs
+│       │   │   └── page.js
+│       │   ├── predict
+│       │   │   └── page.js
+│       │   ├── team
+│       │   │   └── page.js
+│       │   └── ui
+│       │       ├── cover.js
+│       │       ├── ErrorModal.js
+│       │       ├── Form.js
+│       │       ├── Map.js
+│       │       ├── Navbar.js
+│       │       ├── Prediction.js
+│       │       └── TeamMember.js
+│       ├── helpers
+│       │   └── data.js
+│       └── public
+│           ├── hero_cover.png
+│           ├── home.png
+│           ├── workflow.jpg
+│           ├── taxi.gif
+│           └── icon.png
+├── .gitignore
+├── .dockerignore
+├── docker-compose.yml
+├── taxi.png
+├── LICENSE
 ├── NYC_TAXI_ML.ipynb
 ├── README.md
 └── requirements.txt
