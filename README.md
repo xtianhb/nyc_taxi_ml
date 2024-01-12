@@ -23,7 +23,7 @@ Because of the dataset size, it was split into separate files, one for each mont
 
 ## Project workflow
 
-![Screenshot from 2023-12-22 13-00-59](https://github.com/xtianhb/nyc_taxi_ml/assets/93018629/d66217f8-0c9b-47c5-a19a-84ba7767e1a5)
+![Screenshot from 2023-12-22 13-00-59](![workflow](https://github.com/xtianhb/nyc_taxi_ml/assets/93018629/df40a688-3c69-49e9-8d1b-18cee789161a)
 
 
 ## Project Structure
