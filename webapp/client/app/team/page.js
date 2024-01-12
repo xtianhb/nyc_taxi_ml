@@ -10,18 +10,6 @@ const TeamPage = () => {
       linkedinUsername: 'xtianhb',
     },
     {
-      name: 'Álvaro Ruiz',
-      profilePicture: '58787603?v=4',
-      githubUsername: 'alvarorf',
-      linkedinUsername: 'alvaro-r-147818289',
-    },
-    {
-      name: 'Jhoan Najera',
-      profilePicture: '128323811?v=4',
-      githubUsername: 'jhoannajera11',
-      linkedinUsername: 'jhoan-najera11',
-    },
-    {
       name: 'Jorge Damian Bringas',
       profilePicture: '140633379?v=4',
       githubUsername: 'xtianhb',
