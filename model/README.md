@@ -4,7 +4,7 @@ This folder contains all the resources to build, train, and deploy the ML models
 
 The project uses mainly 2 ML models: fare amount and trip duration. 
 
-Although, there is a previous step needed, to estimte the average speed in hour.
+Although, there is a previous step needed, to estimate the average speed in hour.
 It's an estimation of hourly speed based on different data from the other two models.
 This provides an important feature for the ML models that depends on the hour of the trip.
 

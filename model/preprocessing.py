@@ -21,6 +21,8 @@ features = [
     "rush_hour",
     "day_of_week",
     "trip_d2",
+    "PULocationID",
+    "DOLocationID",
     "avg_speed",
 ]
 
@@ -144,7 +146,6 @@ def add_day_of_week(df: pd.DataFrame):
     df["day_of_week"] = df["tpep_pickup_datetime"].dt.day_of_week
     return df
 
-
 def build_avg_speed_feature(df: pd.DataFrame):
     """ """
     df = add_avg_speed(df)
@@ -200,6 +201,26 @@ def add_hourzone_encoding(df: pd.DataFrame):
     final_df.drop(columns="hour_zone", inplace=True)
     return final_df, (encoder, "hour_zone")
 
+def add_pu_location(df: pd.DataFrame):
+    encoder = OneHotEncoder()
+    encoded_data = encoder.fit_transform(df[["PULocationID"]])
+    encoded_df = pd.DataFrame(
+        encoded_data.toarray(), columns=encoder.get_feature_names_out(["PULocationID"])
+    )
+    final_df = pd.concat([df, encoded_df], axis=1, join="inner")
+    final_df.drop(columns="PULocationID", inplace=True)
+    return final_df, (encoder, "PULocationID")
+
+def add_do_location(df: pd.DataFrame):
+    encoder = OneHotEncoder()
+    encoded_data = encoder.fit_transform(df[["DOLocationID"]])
+    encoded_df = pd.DataFrame(
+        encoded_data.toarray(), columns=encoder.get_feature_names_out(["DOLocationID"])
+    )
+    final_df = pd.concat([df, encoded_df], axis=1, join="inner")
+    final_df.drop(columns="DOLocationID", inplace=True)
+    return final_df, (encoder, "DOLocationID")
+
 
 def add_targets(df: pd.DataFrame):
     """ """
@@ -233,6 +254,12 @@ def create_one_hot_encodings(df: pd.DataFrame, features: str):
         encoders.append(encoder)
     if "hour_zone" in features:
         df, encoder = add_hourzone_encoding(df)
+        encoders.append(encoder)
+    if "PULocationID" in features:
+        df, encoder = add_pu_location(df)
+        encoders.append(encoder)
+    if "DOLocationID" in features:
+        df, encoder = add_do_location(df)
         encoders.append(encoder)
 
     return df, encoders
